@@ -7,7 +7,7 @@ export const StoreContext = createContext(null);
 export const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});  // { shopId: { itemId: quantity, ... }, ... }
     const [shopId, setShopId] = useState(null);  // Track the current shop ID
-    const url = "http://localhost:4000";
+    const url = "https://drovo.onrender.com";
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
     const [userType, setUserType] = useState("user");
