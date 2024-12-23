@@ -1,0 +1,170 @@
+.setup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.setup-form {
+    background: #f7f7f7;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.setup-form h2,
+.setup-form h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.setup-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.subscription-cards-setup {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    padding: 15px;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    width: 100px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.card.selected {
+    border-color: tomato;
+    background-color: #f0f8ff;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    border-color: tomato;
+}
+
+.card h4 {
+    margin: 0;
+    font-size: 18px;
+    color: tomato;
+}
+
+.card p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.terms {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #555;
+    gap: 5px;
+    /* Add spacing between the checkbox and text */
+}
+
+.terms input {
+    margin: 0;
+    /* Remove default margin for the checkbox */
+    width: 18px;
+    height: 18px;
+}
+
+.terms a {
+    color: tomato;
+    text-decoration: none;
+}
+
+.terms a:hover {
+    text-decoration: underline;
+}
+
+.pay {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: white;
+    background-color: tomato;
+    font-size: 15px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    /* Center the button horizontally */
+}
+
+.pay:hover {
+    background-color: rgb(254, 55, 20);
+}
+
+/* Setup.css */
+
+/* Style for the file input container */
+.file-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.file-input-label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Hidden file input field */
+.file-input {
+    display: none;
+}
+
+/* Custom file upload button */
+.file-input-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.file-input-button:hover {
+    background-color: #45a049;
+}
+
+/* File name display */
+.file-name {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.setup-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical; /* Allows vertical resizing only */
+    min-height: 100px; /* Minimum height for the textarea */
+    max-height: 200px; /* Limit the height for larger textboxes */
+    box-sizing: border-box; /* Ensures padding does not affect width */
+}

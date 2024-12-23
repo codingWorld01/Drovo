@@ -17,8 +17,13 @@ a {
   color: inherit;
 }
 
-.app {
+.app-user {
   width: 80%;
+  margin: auto;
+}
+
+.app-admin {
+  width: 100%;
   margin: auto;
 }
 
@@ -26,7 +31,23 @@ a {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
+}
+
+.app-content {
+  display: flex;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.cursor {
+  cursor: pointer;
 }

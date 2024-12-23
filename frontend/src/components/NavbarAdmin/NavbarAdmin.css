@@ -1,0 +1,36 @@
+.navbarAdmin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4%;
+}
+
+.navbarAdmin .logo {
+    width: max(6%, 80px);
+}
+
+/* .navbarAdmin .profile {
+    width: 40px;
+} */
+
+.navbarAdmin button {
+    background: transparent;
+    font-size: 16px;
+    color: #49557e;
+    border: 1px solid tomato;
+    padding: 10px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.navbarAdmin button:hover {
+    background-color: #efeae9;
+}
+
+@media (max-width:1050px) {
+    .navbarAdmin button {
+        padding: 7px 20px;
+        font-size: 15px;
+    }
+}

@@ -6,7 +6,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
+    shopId: {
+        type: String,
+        required: true
+    },
     items: {
         type: Array,
         required: true
@@ -27,9 +30,9 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    payment: {
-        type: Boolean,
-        default: false
+    deliveryCharge: {
+        type: String,
+        required: true
     }
 })
 

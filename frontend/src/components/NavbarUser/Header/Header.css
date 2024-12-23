@@ -1,0 +1,87 @@
+.header {
+    width: 100%;
+    margin-top: 5vh;
+    /* height: 100vh; Ensure it takes up the full height of the viewport */
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    position: relative;
+}
+
+.slideshow-container {
+    position: relative;
+    width: 58vw;
+    /* Adjust width as needed */
+    height: 65vh;
+    /* Adjust height as needed */
+}
+
+.slideshow-image {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    transition: background-image 1s ease-in-out;
+}
+
+.slideshow-nav {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.slideshow-nav button {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 2rem;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.slideshow-nav button:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.pause-play {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    border-radius: 5px;
+}
+
+.pause-play:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .slideshow-container {
+        width: 100%;
+        /* Adjust width as needed */
+        height: 22vh;
+        /* Adjust height as needed */
+    }
+
+    .slideshow-nav button {
+        font-size: 1.5rem; /* Smaller button text */
+        padding: 0.5rem; /* Smaller padding */
+    }
+
+    .pause-play {
+        font-size: 1.2rem; /* Smaller font size */
+        padding: 0.3rem 0.7rem; /* Smaller padding */
+    }
+}

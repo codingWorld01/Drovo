@@ -1,7 +1,3 @@
-.food-display {
-    margin-top: 30px;
-}
-
 .food-display h2 {
     font-size: 20px;
     font-weight: 600;
@@ -15,6 +11,13 @@
     row-gap: 50px;
 }
 
-
+.no-items-message {
+    grid-column: 1 / -1; /* Ensures the message spans across the grid */
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #555;
+    margin-top: 20px;
+}
 
 

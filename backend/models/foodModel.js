@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 const foodSchema = new mongoose.Schema({
     name: {
-        type:String,
+        type: String,
         required: true
     },
 
@@ -12,7 +12,17 @@ const foodSchema = new mongoose.Schema({
     },
 
     price: {
-        type:Number,
+        type: Number,
+        required: true
+    },
+
+    unit: {
+        type: String,
+        required: true
+    },
+
+    quantity: {
+        type: Number,
         required: true
     },
 
@@ -24,9 +34,16 @@ const foodSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true
+    },
+
+    shop: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Shop", // Refers to the Shop collection
+        required: true,
     }
 })
 
-const foodModel = mongoose.models.food || mongoose.model("food",foodSchema);
+const foodModel = mongoose.models.food || mongoose.model("food", foodSchema);
 
 export default foodModel;
+

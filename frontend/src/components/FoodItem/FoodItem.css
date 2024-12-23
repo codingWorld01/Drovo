@@ -12,6 +12,26 @@
     border-radius: 15px 15px 0px 0px;
 }
 
+.food-item-img-container .add-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    cursor: pointer;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #28a745;
+    color: white;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.food-item-img-container .add-btn:hover {
+    background-color: #218838;
+}
+
+
 .food-item-info {
     padding: 20px;
 }
@@ -49,12 +69,12 @@
 }
 
 .food-item-img-container .add {
-   width: 35px;  
-   position: absolute;
-   bottom: 15px;
-   right: 15px;
-   cursor: pointer;
-   border-radius: 50%;
+    width: 35px;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    cursor: pointer;
+    border-radius: 50%;
 }
 
 .food-item-counter {
