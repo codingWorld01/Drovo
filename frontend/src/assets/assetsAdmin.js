@@ -1,0 +1,21 @@
+import logo from './logo.jpg'
+import add_icon from './add_icon.png'
+import order_icon from './order_icon.png'
+import profile_image from './profile_image.png'
+import upload_area from './upload_area.png'
+import parcel_icon from './parcel_icon.png'
+import list_icon from './list_icon.png';
+import refresh from './refresh.png'
+
+export const assetsAdmin ={
+    logo,
+    add_icon,
+    list_icon,
+    order_icon,
+    profile_image,
+    upload_area,
+    parcel_icon,
+    refresh
+}
+
+export const url = import.meta.env.VITE_BASE_URL;

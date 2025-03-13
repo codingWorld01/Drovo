@@ -1,0 +1,444 @@
+/* General Styles */
+.order-details-page {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.order-details-page h2 {
+    font-size: 2rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.feedback-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.feedback-form button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.feedback-form button:hover {
+    background-color: #0056b3;
+}
+
+.rating-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the slider and the value */
+    justify-content: space-between;
+    width: 100%;
+}
+
+.rating-slider {
+    width: 75%; /* Make the slider half the container */
+    appearance: none;
+    height: 8px;
+    border-radius: 5px;
+    background: rgb(255, 196, 186);
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.rating-slider::-webkit-slider-runnable-track {
+    border-radius: 5px;
+}
+
+
+.rating-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.rating-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+/* Display the rating value on the right */
+.rating-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.shop-details-container {
+    display: flex;
+    flex-direction: column;
+    /* Stack items vertically */
+    gap: 20px;
+    /* Space between image and details */
+    margin-bottom: 20px;
+    align-items: center;
+    /* Center align content */
+}
+
+.shop-image-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.shop-info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    text-align: center;
+    /* Center align text for shop details */
+}
+
+.contact-links-row {
+    display: flex;
+    justify-content: center;
+    /* Center the links horizontally */
+    gap: 20px;
+    /* Space between the links */
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+    margin-top: 10px;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+    color: #0056b3;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+.order-details-page h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #3498db;
+    margin: 10px auto;
+    border-radius: 2px;
+    animation: slideIn 1s ease-in-out;
+}
+
+.order-details-page p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+.order-details-page p strong {
+    color: #2c3e50;
+}
+
+.order-details-page h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    animation: fadeInUp 0.8s ease-in-out;
+}
+
+.order-details-page ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    animation: fadeInUp 0.9s ease-in-out;
+}
+
+.order-details-page ul li {
+    background: #f4f4f4;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #555;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.order-details-page ul li:hover {
+    transform: scale(1.02);
+}
+
+.order-details-page ul li::before {
+    content: "🛒";
+    margin-right: 10px;
+    font-size: 1.2rem;
+    animation: bounce 1s infinite;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    overflow: hidden;
+    margin: 20px 0;
+    height: 30px;
+}
+
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: tomato;
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+    flex-grow: 1;
+}
+
+.progress-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    flex-grow: 1;
+    transition: width 0.3s ease-in-out;
+}
+
+.stage {
+    transition: color 0.3s ease;
+}
+
+.stage.active {
+    color: #fff;
+}
+
+
+/* This ensures that hidden stages do not take any space */
+.progress-stage:not(:empty) {
+    display: flex;
+}
+
+.shop-image {
+    width: 100%;
+    /* Ensures it scales with the container */
+    max-width: 500px;
+    /* Sets a limit for the image size */
+    height: auto;
+    /* Maintains aspect ratio */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    /* Ensures the image looks neat within its bounds */
+}
+
+
+/* Animations for progress */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 60px;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+
+
+
+    .contact-links-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .order-details-page {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .order-details-page h2 {
+        font-size: 1.5rem;
+    }
+
+    .order-details-page h3 {
+        font-size: 1.3rem;
+    }
+
+    .order-details-page p {
+        font-size: 1rem;
+    }
+
+    .order-details-page ul li {
+        font-size: 0.9rem;
+    }
+
+    .progress-container {
+        height: 25px;
+    }
+
+    .progress-bar {
+        height: 100%;
+    }
+
+    .progress-stage {
+        font-size: 0.8rem;
+    }
+
+    .shop-details-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .shop-image-column {
+        width: 100%;
+        text-align: center;
+    }
+
+    .shop-image {
+        max-width: 100px;
+    }
+
+    .shop-info-column {
+        align-items: center;
+        text-align: center;
+    }
+
+    .shop-image {
+        max-width: 400px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .order-details-page {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    .shop-image {
+        max-width: 400px;
+    }
+
+    .order-details-page h2 {
+        font-size: 1.3rem;
+    }
+
+    .order-details-page h3 {
+        font-size: 1.2rem;
+    }
+
+    .order-details-page p {
+        font-size: 0.9rem;
+    }
+
+    .order-details-page ul li {
+        font-size: 0.8rem;
+    }
+
+    .progress-container {
+        height: 20px;
+    }
+
+    .progress-bar {
+        height: 100%;
+    }
+
+    .progress-stage {
+        font-size: 0.7rem;
+    }
+}

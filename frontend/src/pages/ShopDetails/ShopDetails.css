@@ -1,0 +1,229 @@
+.shop-details {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.shop-info-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    max-width: 1200px;
+    margin: auto;
+    flex-wrap: wrap;
+}
+
+.shop-detail-image {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+.shop-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.shop-info h1 {
+    font-size: 2.4rem;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.shop-info .shop-email,
+.shop-info .shop-address,
+.shop-info .shop-contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.shop-info a {
+    font-size: 1.2rem;
+    color: #007BFF;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.shop-info a:hover {
+    text-decoration: underline;
+}
+
+.shop-info p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.icon-image {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.search-bar {
+    margin: 20px auto;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #007bff; /* Highlight border color on focus */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+
+.clear-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: color 0.3s ease;
+    color:  tomato; /* Matches the search input's border focus color */
+
+}
+
+.clear-button:hover {
+    color: rgb(255, 38, 0); /* Matches the search input's border focus color */
+}
+
+.no-food-items {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.no-food-image {
+    width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.clear-button-not-found {
+    padding: 8px 12px;
+    background-color: rgb(255, 136, 115);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.clear-button-not-found:hover {
+    background-color: tomato;
+}
+
+
+/* Floating Cart Styles */
+.floating-cart {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #d1c6c6;
+    color: white;
+    border-radius: 50%;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 999;
+}
+
+.cart-counter {
+    position: absolute;
+    top: -0px;
+    right: -0px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+
+@media (max-width: 768px) {
+    .shop-info h1 {
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 5px;
+    }
+
+    .shop-info-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .shop-detail-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .shop-info {
+        align-items: center;
+    }
+
+    .shop-info .shop-address {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .shop-info h1 {
+        font-size: 2rem;
+    }
+
+    .shop-info a {
+        font-size: 1rem;
+    }
+
+    .search-bar {
+        margin: 0px auto;
+        width: 100%;
+    }
+}

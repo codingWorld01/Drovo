@@ -1,0 +1,296 @@
+.place-order {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 50px;
+    margin-top: 100px;
+    flex-wrap: wrap;
+    /* Enable wrapping for smaller screens */
+}
+
+.place-order-left,
+.place-order-right {
+    width: 100%;
+    max-width: 500px;
+    flex: 1;
+    /* Allow equal distribution of space */
+}
+
+.place-order-left .title {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 50px;
+}
+
+.place-order-left input {
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    outline-color: tomato;
+}
+
+.cancellation-policy {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+}
+
+
+/* Google Maps Autocomplete Input Style */
+#street-address {
+    width: 100%;
+    padding: 12px;
+    /* Slightly larger padding for clarity */
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+/* Address fields in multi-field */
+.place-order-left .multi-field {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    /* Wrap inputs on smaller screens */
+}
+
+.place-order-left .multi-field input {
+    flex: 1;
+    /* Allow inputs to take equal space */
+}
+
+.place-order-right {
+    max-width: 100%;
+}
+
+.place-order .cart-total button {
+    margin-top: 30px;
+    width: 100%;
+    /* Full width on smaller screens */
+}
+
+.payment-note {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+.payment-note strong {
+    font-weight: bold;
+}
+
+.current-location-btn {
+    background-color: #007bff;
+    /* Primary blue color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    justify-content: center;
+}
+
+.button-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    /* Ensure the icon scales proportionally */
+    display: inline-block;
+}
+
+.cart-total-final {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.cart-total-final h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    /* Darker text for emphasis */
+    margin-bottom: 15px;
+    /* Spacing below the title */
+    text-align: center;
+}
+
+.cart-total-details-final {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.cart-total-details-final p,
+.cart-total-details-final b {
+    font-size: 16px;
+    color: #555;
+    /* Subtle gray for regular text */
+}
+
+.cart-total-details-final b {
+    color: #000;
+    /* Black for bold, important text */
+}
+
+.cart-total-details-final:last-child {
+    margin-bottom: 0;
+}
+
+.cart-total-final button {
+    background-color: tomato;
+    /* Highlight color for the button */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.cart-total-final button:hover {
+    background-color: #e04d3a;
+}
+
+.cart-total-final button:active {
+    background-color: #c44033;
+    /* Even darker shade on click */
+    transform: scale(0.98);
+    /* Slight shrink on click */
+}
+
+.cart-total-details-final hr {
+    border: 0.5px solid #eee;
+    /* Divider for better organization */
+    margin: 10px 0;
+}
+
+
+.current-location-btn:hover {
+    background-color: #0056b3;
+}
+
+.current-location-btn:active {
+    background-color: #004494;
+    /* Even darker shade for click */
+    transform: scale(0.98);
+    /* Slightly shrink on click */
+}
+
+/* Styling for "OR" separator */
+.or-separator {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    /* Subtle gray color for secondary emphasis */
+    position: relative;
+    margin: 20px 0;
+}
+
+.or-separator:before,
+.or-separator:after {
+    content: "";
+    display: block;
+    width: 40%;
+    height: 1px;
+    background-color: #ccc;
+    /* Light gray lines */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.or-separator:before {
+    left: 0;
+}
+
+.or-separator:after {
+    right: 0;
+}
+
+input:disabled {
+    background-color: #f9f9f9;
+    color: #aaa;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .place-order {
+        flex-direction: column;
+        /* Stack elements vertically on small screens */
+        margin-top: 50px;
+        padding: 1rem;
+    }
+
+    .cart-total-final {
+        padding: 15px;
+    }
+
+    .cart-total-final h2 {
+        font-size: 20px;
+    }
+
+    .cart-total-final button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .cart-total-details-final p,
+    .cart-total-details-final b {
+        font-size: 14px;
+    }
+
+    .place-order-left,
+    .place-order-right {
+        max-width: 100%;
+    }
+
+    .place-order-left .title {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .place-order-left .title {
+        font-size: 20px;
+    }
+
+    .place-order-left input {
+        padding: 8px;
+        /* Reduce padding on small screens */
+    }
+
+    .place-order .cart-total button {
+        padding: 10px;
+        /* Adjust button padding */
+        font-size: 16px;
+        /* Adjust font size */
+    }
+}
