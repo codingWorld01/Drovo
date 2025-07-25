@@ -6,19 +6,20 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { assetsUser } from '../../assets/assetsUser';
 
-const Cart = ({setShowLogin}) => {
+const Cart = ({ setShowLogin }) => {
   const { cartItems, food_list, removeFromCart, addToCart, getTotalCartAmount, url, token, shopId, deleteFromCart, logout } = useContext(StoreContext);
   const navigate = useNavigate();
   const [shopDetails, setShopDetails] = useState(null);
+  const [promoCode, setPromoCode] = useState("");
 
   // Fetch shop details when the component mounts
   useEffect(() => {
     const fetchShopDetails = async () => {
       try {
         if (shopId) {
-          const response = await axios.get(`${url}/api/shops/${shopId}`);  // Adjust URL as needed
+          const response = await axios.get(`${url}/api/shops/${shopId}`);
           if (response.data.success) {
-            setShopDetails(response.data.data.shop);  // Store shop details
+            setShopDetails(response.data.data.shop);
           }
         }
       } catch (error) {
@@ -39,6 +40,7 @@ const Cart = ({setShowLogin}) => {
   const isEligibleForCheckout = getTotalCartAmount() >= 60;
 
   const handlePromoCode = () => {
+    setPromoCode("");
     toast.error("Invalid Code");
   };
 
@@ -74,7 +76,7 @@ const Cart = ({setShowLogin}) => {
     }
   };
 
-  
+
 
   // Check if there are any items in the cart for this shop
   const hasItemsInCart = Object.keys(cartItems[shopId] || {}).some(itemId => cartItems[shopId][itemId] > 0);
@@ -114,7 +116,7 @@ const Cart = ({setShowLogin}) => {
                 if (itemQuantity > 0) {
                   return (
                     <div key={index} className="cart-item">
-                      <img src={url + "/images/" + item.image} alt={item.name} />
+                      <img src={item.image} alt={item.name} />
                       <p>{item.name}</p>
                       <p>&#8377;{item.price}</p>
                       <p>
@@ -137,7 +139,7 @@ const Cart = ({setShowLogin}) => {
               </div>
 
               <div className="promo-code">
-                <input type="text" placeholder="Promo code" className="promo-input" />
+                <input type="text" placeholder="Promo code" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} className="promo-input" />
                 <button onClick={handlePromoCode} className="promo-btn">Apply</button>
               </div>
             </div>

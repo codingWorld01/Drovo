@@ -6,16 +6,16 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/storeContext';
 
-const Add = ({ url }) => {
-    const { logout } = useContext(StoreContext);
+const Add = () => {
+    const { logout, url } = useContext(StoreContext);
     const [image, setImage] = useState(null);
     const [data, setData] = useState({
         name: "",
         description: "",
         price: "",
-        shopType: "Dairy",  // default shop type
-        category: "Milk",   // default category for Dairy shop
-        unit: "liter",      // default unit
+        foodType: "Dairy",
+        category: "Milk",
+        unit: "liter",
         quantity: 1
     });
 
@@ -32,12 +32,12 @@ const Add = ({ url }) => {
         const value = event.target.value;
         setData(data => ({ ...data, [name]: value }));
 
-        // If shop type changes, reset category 
-        if (name === 'shopType') {
+        // If food type changes, reset category 
+        if (name === 'foodType') {
             setData({
                 ...data,
-                shopType: value,
-                category: shopCategories[value][0], // Reset to the first category for the selected shop type
+                foodType: value,
+                category: shopCategories[value][0], // Reset to the first category for the selected food type
             });
         }
     };
@@ -45,57 +45,66 @@ const Add = ({ url }) => {
     const onSubmitHandler = async (event) => {
         event.preventDefault();
 
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("description", data.description);
-        formData.append("price", Number(data.price));
-        formData.append("shopType", data.shopType);
-        formData.append("category", data.category);
-        formData.append("unit", data.unit);
-        formData.append("quantity", data.quantity);
-        formData.append("image", image);
+        if (!image) {
+            toast.error("Upload Food Image!");
+            return;
+        }
 
-        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+        try {
 
-        // Using toast.promise to show loader, success, and error messages
-        await toast.promise(
-            axios.post(`${url}/api/food/add`, formData, { headers: { token } }),
-            {
-                loading: 'Adding food item...',
-                success: (response) => {
-                    // Reset form and image on success
-                    setData({
-                        name: "",
-                        description: "",
-                        price: "",
-                        shopType: "Dairy",
-                        category: "Milk",
-                        unit: "liter",
-                        quantity: 1
-                    });
-                    setImage(null);  // Reset image
-                    return response.data.message || "Food item added successfully!";
-                },
-                error: (error) => {
-                    console.error("Error in adding product", error);
-                    if (error.response?.data?.redirect) {
-                        navigate(error.response.data.redirect); // Redirect to setup or subscription page
-                        return error.response.data.message || "Please complete your setup or renew your subscription.";
-                    }
-                    if (error.response && error.response.status === 401) {
-                        if (error.response.data.message === 'Token expired') {
-                            logout();
+            const token = localStorage.getItem('token');
+
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = async () => {
+                const base64Image = reader.result;
+
+                await toast.promise(
+                    axios.post(`${url}/api/food/add`, {
+                        ...data,
+                        image: base64Image
+                    }, { headers: { token, "Content-Type": 'application/json' } }),
+                    {
+                        loading: 'Adding food item...',
+                        success: (response) => {
+                            setData({
+                                name: "",
+                                description: "",
+                                price: "",
+                                foodType: "Dairy",
+                                category: "Milk",
+                                unit: "liter",
+                                quantity: 1
+                            });
+                            setImage(null);
+                            return response.data.message || "Food item added successfully!";
+                        },
+                        error: (error) => {
+                            console.error("Error in adding product", error);
+                            if (error.response?.data?.redirect) {
+                                navigate(error.response.data.redirect);
+                                return error.response.data.message || "Please complete your setup or renew your subscription.";
+                            }
+                            if (error.response && error.response.status === 401) {
+                                if (error.response.data.message === 'Token expired') {
+                                    logout();
+                                }
+                            }
+                            if (error.response && error.response.data && error.response.data.message) {
+                                return error.response.data.message;
+                            }
+
+                            return "An error occurred while adding the food item.";
                         }
                     }
-                    if (error.response && error.response.data && error.response.data.message) {
-                        // Show detailed error message from the backend
-                        return error.response.data.message;
-                    }
-
-                    return "An error occurred while adding the food item.";
-                }
+                );
             }
-        );
+            reader.onerror = () => toast.error("Error in reading image file");
+        }
+        catch (error) {
+            toast.error("Error Adding Food Item")
+            console.log("Error in adding FoodItem", error);
+        }
     };
 
     return (
@@ -140,21 +149,21 @@ const Add = ({ url }) => {
                 </div>
 
                 <div className="add-category-price">
-                    {/* Shop Type Selection */}
+                    {/* Food Type Selection */}
                     <div className="add-shop-type flex-col">
-                        <p>Shop Type</p>
-                        <select onChange={onChangeHandler} name="shopType" value={data.shopType}>
+                        <p>Food Type</p>
+                        <select onChange={onChangeHandler} name="foodType" value={data.foodType}>
                             <option value="Dairy">Dairy</option>
                             <option value="Grocery">Grocery</option>
                             <option value="Bakery">Bakery</option>
                         </select>
                     </div>
 
-                    {/* Category Dropdown based on Shop Type */}
+                    {/* Category Dropdown based on food Type */}
                     <div className="add-category flex-col">
                         <p>Category</p>
                         <select onChange={onChangeHandler} name="category" value={data.category}>
-                            {shopCategories[data.shopType]?.map((cat) => (
+                            {shopCategories[data.foodType]?.map((cat) => (
                                 <option key={cat} value={cat}>{cat}</option>
                             ))}
                         </select>

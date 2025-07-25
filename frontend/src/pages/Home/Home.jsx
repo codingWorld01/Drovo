@@ -92,10 +92,10 @@ const Home = () => {
             <Header />
             {/* Shop List Section */}
             <div className="shop-list" ref={shopSectionRef}>
-                <h1>Available Shops</h1>
+                <h1>Shops Near You</h1>
                 <div className="shop-grid">
                     {loading
-                        ? Array.from({ length: 6 }).map((_, index) => (
+                        ? Array.from({ length: 3 }).map((_, index) => (
                             <div key={index} className="shop-card">
                                 <Skeleton height={200} />
                                 <div className="shop-info-home">
@@ -108,7 +108,7 @@ const Home = () => {
                             <Link to={`/shop/${shop._id}`} key={shop._id} className="shop-card">
                                 <div className="shop-card-content">
                                     <img
-                                        src={`${url}/images/${shop.shopImage}`}
+                                        src={`${shop.shopImage}`}
                                         alt={shop.name}
                                         className="shop-image-home"
                                     />

@@ -3,19 +3,19 @@ import './Orders.css';
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { assetsAdmin } from "../../assets/assetsAdmin";
-import Loader from "../../components/Loader/Loader"; // Import your loader component
+import Loader from "../../components/Loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { StoreContext } from '../../context/storeContext';
 
 const Orders = ({ url }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isAtTop, setIsAtTop] = useState(true); // Track if at top of page
+  const [isAtTop, setIsAtTop] = useState(true);
   const navigate = useNavigate();
   const { logout } = useContext(StoreContext);
 
   const fetchAllOrders = async () => {
-    setLoading(true); // Start loader
+    setLoading(true);
     try {
       let token = localStorage.getItem("token");
       const response = await axios.get(url + "/api/order/list", {
@@ -35,15 +35,14 @@ const Orders = ({ url }) => {
       }
 
       if (error.response?.data?.redirect) {
-        navigate(error.response.data.redirect); // Redirect to setup or subscription page
+        navigate(error.response.data.redirect);
         toast.error(error.response.data.message || "Please complete your setup or renew your subscription.");
-      }
-      else {
+      } else {
         toast.error("Error fetching orders");
       }
       console.error("Error fetching orders:", error);
     } finally {
-      setLoading(false); // Stop loader
+      setLoading(false);
     }
   };
 
@@ -93,20 +92,17 @@ const Orders = ({ url }) => {
   };
 
   const handleScroll = () => {
-    // Check if the page is at the top or scrolled
     if (window.scrollY === 0) {
-      setIsAtTop(true);  // User is at the top
+      setIsAtTop(true);
     } else {
-      setIsAtTop(false); // User has scrolled down
+      setIsAtTop(false);
     }
   };
 
   useEffect(() => {
     fetchAllOrders();
-    // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup the event listener when the component unmounts
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -116,10 +112,10 @@ const Orders = ({ url }) => {
     <div className="order-page">
       <h3>Order Management</h3>
       {loading ? (
-        <Loader /> // Show loader while loading
+        <Loader />
       ) : (
         <div className="order-list">
-          {orders && orders.length === 0 ? ( // Handle no orders
+          {orders && orders.length === 0 ? (
             <p className="no-orders-message">No orders available at the moment.</p>
           ) : (
             orders.slice().reverse().map((order, index) => (
@@ -140,6 +136,7 @@ const Orders = ({ url }) => {
                     <p>{order.address.floor}, {order.address.landmark}</p>
                   </div>
                   <p className="order-item-phone">{order.address.phone}</p>
+                  <p><strong>Payment Method:</strong> {order.paymentMethod == "COD" ? "Cash on Delivery" : "Online Payment"}</p>
                   <button
                     className="direction-button"
                     onClick={() => getDirections(order.address.latitude, order.address.longitude)}
@@ -149,8 +146,8 @@ const Orders = ({ url }) => {
                 </div>
                 <div className="order-summary">
                   <p><strong>Items:</strong> {order.items.length}</p>
-                  <p><strong>Total:</strong> &#8377;{order.amount}</p>
-                  <p><strong>Delivery Charge:</strong> &#8377;{order.deliveryCharge}</p>
+                  <p><strong>Total:</strong> ₹{order.amount}</p>
+                  <p><strong>Delivery Charge:</strong> ₹{order.deliveryCharge}</p>
                   <p><strong>Date:</strong> {formatDate(order.date)}</p>
                   <select
                     onChange={(event) => statusHandler(event, order._id)}
@@ -168,7 +165,6 @@ const Orders = ({ url }) => {
         </div>
       )}
 
-      {/* Go to Top Button */}
       {!isAtTop && (
         <button className="go-to-top" onClick={scrollToTop}>
           ↑

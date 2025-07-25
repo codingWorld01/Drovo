@@ -7,13 +7,12 @@ import { toast } from "react-hot-toast";
 import { assetsUser } from "../../assets/assetsUser";
 import Loader from "../../components/Loader/Loader";
 
-
 const PlaceOrder = () => {
   const { getTotalCartAmount, token, food_list, cartItems, url, shopId, setCartItems, logout } = useContext(StoreContext);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [addressError, setAddressError] = useState("");
-
+  const [paymentMethod, setPaymentMethod] = useState("COD");
 
   const [data, setData] = useState({
     firstName: "",
@@ -31,19 +30,15 @@ const PlaceOrder = () => {
   const [isAddressFilled, setIsAddressFilled] = useState(false);
   const [isCalculatingDistance, setIsCalculatingDistance] = useState(false);
 
+
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
-
-    setData((prevData) => {
-      const isStreetChanged = name === "street";
-      return {
-        ...prevData,
-        [name]: value,
-        ...(isStreetChanged ? { latitude: "", longitude: "" } : {}),
-      };
-    });
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      ...(name === "street" ? { latitude: "", longitude: "" } : {}),
+    }));
   };
-
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -53,7 +48,6 @@ const PlaceOrder = () => {
           setData((prevData) => ({ ...prevData, latitude, longitude }));
           setIsAddressFilled(true);
 
-          // Reverse geocode to get the address using Google Maps API
           const geocoder = new window.google.maps.Geocoder();
           const latLng = new window.google.maps.LatLng(latitude, longitude);
 
@@ -61,20 +55,16 @@ const PlaceOrder = () => {
             if (status === "OK" && results[0]) {
               const address = results[0].formatted_address;
               setData((prevData) => ({ ...prevData, street: address }));
-              setAddressError(""); // Clear any previous error
+              setAddressError("");
               toast.success("Location fetched successfully!");
-              setAddressError(
-                "If Address seems incorrect. Please use autocomplete to fix it."
-              );
+              setAddressError("If Address seems incorrect, please use autocomplete to fix it.");
             } else {
-              toast.error("Unable to fetch location. Please try again.");
+              toast.error("Unable to fetch address. Please try again.");
             }
           });
         },
         () => {
-          setAddressError(
-            "Unable to access location. Please enable location services or use autocomplete."
-          );
+          setAddressError("Unable to access location. Please enable location services or use autocomplete.");
           toast.error("Unable to access location. Please enable location services.");
         }
       );
@@ -85,9 +75,8 @@ const PlaceOrder = () => {
   };
 
   useEffect(() => {
-
-    if (Object.keys(cartItems).length === 0 || getTotalCartAmount() == 0) {
-      return navigate("/")
+    if (Object.keys(cartItems).length === 0 || getTotalCartAmount() === 0) {
+      return navigate("/");
     }
 
     if (window.google) {
@@ -99,12 +88,10 @@ const PlaceOrder = () => {
 
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-
         if (place.geometry) {
           const latitude = place.geometry.location.lat();
           const longitude = place.geometry.location.lng();
           const address = place.formatted_address || "";
-
           setData((prevData) => ({
             ...prevData,
             street: address,
@@ -131,7 +118,6 @@ const PlaceOrder = () => {
   useEffect(() => {
     const fetchDistanceAndCharge = async () => {
       if (shopId) {
-
         const shopCoordinates = await axios
           .get(`${url}/api/shops/${shopId}`, { headers: { token } })
           .then((res) => res.data.data.coordinates)
@@ -143,7 +129,6 @@ const PlaceOrder = () => {
         if (!shopCoordinates) return;
 
         setIsCalculatingDistance(true);
-
 
         const customerCoordinates = {
           lat: parseFloat(data.latitude),
@@ -185,6 +170,36 @@ const PlaceOrder = () => {
     }
   }, [data.latitude, data.longitude]);
 
+  const loadRazorpayScript = async () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const initiatePayment = async () => {
+    try {
+      const response = await axios.post(`${url}/api/order/create-order`, {
+        amount: getTotalCartAmount(),
+        deliveryCharge,
+        token,
+        shopId // Include shopId
+      }, { headers: { token } });
+
+      const { order } = response.data;
+      return order;
+    } catch (error) {
+      if (error.response?.status === 401 && error.response.data.message === 'Token expired') {
+        logout();
+      }
+      toast.error("Failed to initiate payment.");
+      throw error;
+    }
+  };
+
   const placeOrder = async (event) => {
     event.preventDefault();
 
@@ -203,18 +218,17 @@ const PlaceOrder = () => {
       return;
     }
 
-    setIsLoading(true); // Show loader
+    setIsLoading(true);
 
     const orderData = {
       address: data,
       items: food_list
         .filter((item) => cartItems[shopId]?.[item._id] > 0)
         .map((item) => {
-          const baseQuantity = cartItems[shopId][item._id] * item.quantity; // Total quantity in base unit
+          const baseQuantity = cartItems[shopId][item._id] * item.quantity;
           let dynamicQuantity = baseQuantity;
           let dynamicUnit = item.unit;
 
-          // Convert grams to kg or ml to liter if applicable
           if (item.unit === 'grams' && baseQuantity >= 1000) {
             dynamicQuantity = (baseQuantity / 1000).toFixed(2);
             dynamicUnit = 'kg';
@@ -223,40 +237,96 @@ const PlaceOrder = () => {
             dynamicUnit = 'liter';
           }
 
-          // Remove trailing ".00" if applicable
           const formattedQuantity = parseFloat(dynamicQuantity) % 1 === 0
             ? parseInt(dynamicQuantity, 10)
             : dynamicQuantity;
 
           return {
             ...item,
-            quantity: `${formattedQuantity} ${dynamicUnit}`, // Update quantity with dynamic unit
+            quantity: `${formattedQuantity} ${dynamicUnit}`,
           };
         }),
       amount: getTotalCartAmount(),
-      deliveryCharge: deliveryCharge,
-      shopId: shopId,
+      deliveryCharge,
+      shopId,
     };
 
-
-    await axios
-      .post(`${url}/api/order/place`, orderData, { headers: { token } })
-      .then((res) => {
-        toast.success("Order placed successfully!");
-        navigate("/myorders");
-        setCartItems({});
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          if (error.response.data.message === 'Token expired') {
-            logout();
-          }
+    try {
+      if (paymentMethod === "COD") {
+        await axios
+          .post(`${url}/api/order/place`, orderData, { headers: { token } })
+          .then((res) => {
+            toast.success("Order placed successfully!");
+            navigate("/myorders");
+            setCartItems({});
+          })
+          .catch((error) => {
+            if (error.response?.status === 401 && error.response.data.message === 'Token expired') {
+              logout();
+            }
+            toast.error("Failed to place order. Please try again.");
+          });
+      } else {
+        const isRazorpayLoaded = await loadRazorpayScript();
+        if (!isRazorpayLoaded) {
+          toast.error("Failed to load Razorpay. Please try again.");
+          setIsLoading(false);
+          return;
         }
-        toast.error("Failed to place order. Please try again.")
-      })
-      .finally(() => setIsLoading(false)); // Hide loader
-  };
 
+        const order = await initiatePayment();
+
+        const options = {
+          key: import.meta.env.VITE_ROZARPAY_KEY_ID,
+          amount: order.amount,
+          currency: order.currency,
+          name: "Drovo",
+          description: "Order Payment",
+          order_id: order.id,
+          handler: async function (response) {
+            try {
+              const verifyResponse = await axios.post(
+                `${url}/api/order/verify`,
+                {
+                  ...orderData,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                },
+                { headers: { token } }
+              );
+
+              if (verifyResponse.data.success) {
+                toast.success("Order placed successfully!");
+                navigate("/myorders");
+                setCartItems({});
+              } else {
+                toast.error("Payment verification failed.");
+              }
+            } catch (error) {
+              console.error("Error verifying payment:", error);
+              toast.error("Payment verification failed. Please contact support.");
+            }
+          },
+          prefill: {
+            name: `${data.firstName} ${data.lastName}`,
+            contact: data.phone,
+          },
+          theme: {
+            color: '#3399cc',
+          },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+      }
+    } catch (error) {
+      console.error("Error during order process:", error);
+      toast.error("Order process failed.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -346,15 +416,23 @@ const PlaceOrder = () => {
               />
             </>
           )}
+
         </div>
 
         <div className="place-order-right">
+          <div className="payment-method">
+            <p>Payment Method</p>
+            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+              <option value="COD">Cash on Delivery</option>
+              <option value="Online">Online Payment</option>
+            </select>
+          </div>
           <div className="cart-total-final">
             <h2>Cart Total</h2>
             <div>
               <div className="cart-total-details-final">
                 <p>Subtotal</p>
-                <p>&#8377;{getTotalCartAmount()}</p>
+                <p>₹{getTotalCartAmount()}</p>
               </div>
               <hr />
               {isCalculatingDistance ? (
@@ -363,16 +441,18 @@ const PlaceOrder = () => {
                 <>
                   <div className="cart-total-details-final">
                     <p>Delivery Fee</p>
-                    <p>&#8377;{deliveryCharge}</p>
+                    <p>₹{deliveryCharge}</p>
                   </div>
                   <hr />
                 </>
               )}
               <div className="cart-total-details-final">
                 <b>Total</b>
-                <b>&#8377;{getTotalCartAmount() + deliveryCharge}</b>
+                <b>₹{getTotalCartAmount() + deliveryCharge}</b>
               </div>
-              <button type="submit">Confirm Order</button>
+              <button type="submit" disabled={isLoading}>
+                {paymentMethod === "COD" ? "Confirm Order" : "Proceed to payment"}
+              </button>
 
               <div className="cancellation-policy">
                 <p><strong>Cancellation Policy:</strong> Orders cannot be cancelled once packed for delivery. In case of unexpected delays, a refund will be provided, if applicable.</p>
@@ -381,9 +461,6 @@ const PlaceOrder = () => {
           </div>
         </div>
       </form>
-      <div className="payment-note">
-        <p><strong>Note:</strong> Payment can be made either via Cash on Delivery or Online Payment when the delivery boy arrives.</p>
-      </div>
     </div>
   );
 };

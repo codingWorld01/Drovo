@@ -40,7 +40,17 @@ const ShopSchema = new mongoose.Schema({
         razorpayOrderId: { type: String },
         razorpayPaymentId: { type: String },
         paymentDate: { type: Date },
-    }
+    },
+
+    bankDetails: {
+    accountHolderName: { type: String },
+    accountNumber: { type: String },
+    ifscCode: { type: String },
+    bankName: { type: String }
+  },
+  
+  razorpayAccountId: { type: String },
+
 });
 
 const Shop = mongoose.models.Shop || mongoose.model('Shop', ShopSchema);

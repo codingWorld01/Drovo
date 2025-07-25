@@ -5,7 +5,6 @@ import validator from 'validator'
 import nodemailer from 'nodemailer';
 import Shop from "../models/ShopModel.js";
 import { OAuth2Client } from 'google-auth-library'
-import e from "express";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -296,6 +295,8 @@ const sendOtp = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to send OTP.' });
     }
 };
+
+
 const verifyOtp = async (req, res) => {
     const { email, otp, name, password } = req.body;
 

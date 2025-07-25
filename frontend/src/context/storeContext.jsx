@@ -74,7 +74,7 @@ export const StoreContextProvider = (props) => {
             }
         }
 
-        return distinctItemCount;  // Return the distinct item count
+        return distinctItemCount;
     };
 
     const logout = () => {
@@ -83,7 +83,7 @@ export const StoreContextProvider = (props) => {
         setUserType('user');
         setToken("");
         navigate("/");
-        toast.success("Logout")
+        // toast.success("Logout")
     }
 
 

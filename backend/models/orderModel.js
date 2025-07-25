@@ -31,11 +31,27 @@ const orderSchema = new mongoose.Schema({
         default: Date.now()
     },
     deliveryCharge: {
-        type: String,
+        type: Number,
         required: true
+    },
+    paymentMethod: {
+        type: String,
+        enum: ["COD", "Online"],
+        required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: ["Pending", "Completed", "Failed"],
+        default: "Pending"
+    },
+    paymentDetails: {
+        razorpayOrderId: { type: String },
+        razorpayPaymentId: { type: String },
+        paymentDate: { type: Date },
+        platformCommission: { type: Number }
     }
 })
 
-const orderModel = mongoose.models.order || mongoose.model("order", orderSchema)
+const orderModel = mongoose.models.order || mongoose.model("order", orderSchema);
 
 export default orderModel;

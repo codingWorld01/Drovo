@@ -49,7 +49,7 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.shop-info:hover,
+
 .subscription-info:hover,
 .payment-info:hover {
     transform: translateY(-5px);

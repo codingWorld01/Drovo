@@ -35,7 +35,7 @@ const FoodItem = ({ id, name, price, description, image, shopId, quantity, unit 
     return (
         <div className='food-item'>
             <div className="food-item-img-container">
-                <img src={url + "/images/" + image} alt="" className="food-item-image" />
+                <img src={image} alt="" className="food-item-image" />
                 {
                     itemQuantity === 0
                         ? <button className='add-btn' onClick={() => addToCart(id, shopId)}>Add</button>

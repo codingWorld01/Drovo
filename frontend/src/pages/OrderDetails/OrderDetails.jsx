@@ -132,7 +132,7 @@ const OrderDetails = () => {
                 <div className="shop-details-container">
                     <div className="shop-image-column">
                         <img
-                            src={`${url}/images/${shop.shopImage}`}
+                            src={`${shop.shopImage}`}
                             alt={shop.name}
                             className="shop-image"
                         />

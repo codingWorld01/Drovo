@@ -1,19 +1,20 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import "./LoginPopup.css";
 import { assetsUser } from "../../assets/assetsUser";
 import { StoreContext } from "../../context/storeContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../Loader/Loader";
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+
 
 const LoginPopup = ({ setShowLogin }) => {
     const { url, setToken, setUserType } = useContext(StoreContext);
     const [currentState, setCurrentState] = useState("Login");
-    const [otpStep, setOtpStep] = useState(false); // Track OTP step
-    const [otp, setOtp] = useState(""); // Store OTP
+    const [otpStep, setOtpStep] = useState(false);
+    const [otp, setOtp] = useState("");
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -25,6 +26,7 @@ const LoginPopup = ({ setShowLogin }) => {
         role: "user",
     });
 
+
     const onChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -32,16 +34,16 @@ const LoginPopup = ({ setShowLogin }) => {
     };
 
     const handleTermsClick = (e) => {
-        e.preventDefault(); // Prevent default link behavior
-        const url = "/terms-and-conditions"; // Define the URL
-        window.open(url, "_blank"); // Open the URL in a new tab
+        e.preventDefault();
+        const url = "/terms-and-conditions";
+        window.open(url, "_blank");
     };
-    
+
 
     const onSendOtp = async (event) => {
         event.preventDefault();
 
-        setIsLoading(true); // Show loader
+        setIsLoading(true);
 
         try {
             const response = await axios.post(`${url}/api/send-otp`, { email: data.email, password: data.password });
@@ -50,7 +52,7 @@ const LoginPopup = ({ setShowLogin }) => {
                 setOtpStep(true);
                 toast.success('OTP sent successfully!');
             } else if (response.data.message) {
-                toast.error(response.data.message); // Backend-specific error
+                toast.error(response.data.message);
             } else {
                 toast.error("Failed to send OTP. Please try again.");
             }
@@ -59,7 +61,7 @@ const LoginPopup = ({ setShowLogin }) => {
             toast.error(errorMessage);
             console.error("Error while sending OTP:", error);
         } finally {
-            setIsLoading(false); // Hide loader after API call finishes
+            setIsLoading(false);
         }
     };
 
@@ -86,7 +88,7 @@ const LoginPopup = ({ setShowLogin }) => {
                 setShowLogin(false);
                 toast.success('OTP Verified!');
             } else if (response.data.message) {
-                toast.error(response.data.message); // Backend-specific error
+                toast.error(response.data.message);
             } else {
                 toast.error("Failed to verify OTP. Please try again.");
             }
@@ -96,7 +98,7 @@ const LoginPopup = ({ setShowLogin }) => {
             console.error("Error during OTP verification:", error);
         }
         finally {
-            setIsLoading(false); // Hide loader after API call finishes
+            setIsLoading(false);
         }
     };
 
@@ -105,7 +107,6 @@ const LoginPopup = ({ setShowLogin }) => {
         try {
             const userType = data.role;
 
-            // Send the Google token to your backend to verify and get the user data
             const response = await axios.post(`${url}/api/login/google`, {
                 token: credentialResponse.credential,
                 userType: userType
@@ -115,18 +116,15 @@ const LoginPopup = ({ setShowLogin }) => {
                 const { token, isNewUser } = response.data;
 
                 if (isNewUser) {
-                    // For new users, perform the signup flow with Google data
                     const decodedToken = jwtDecode(credentialResponse.credential);
 
                     const googleData = {
-                        name: decodedToken.name, // Extracted from the token
-                        email: decodedToken.email, // Extracted from the token
-                        role: data.role, // Assuming the role (user/shop) is selected before Google login
-                        password: "", // We don't need a password for Google login
+                        name: decodedToken.name,
+                        email: decodedToken.email,
+                        role: data.role,
+                        password: "",
                     };
 
-
-                    // Send the Google data to the signup endpoint
                     const signupResponse = await axios.post(`${url}/api/register-google`, googleData);
 
                     if (signupResponse.data.success) {
@@ -136,12 +134,10 @@ const LoginPopup = ({ setShowLogin }) => {
                         localStorage.setItem("userType", userType);
 
                         if (userType === 'shop') {
-                            // If shop, redirect to the /setup page
                             localStorage.setItem("shopEmail", decodedToken.email);
                             navigate("/setup");
                             toast.success("Shop signup successful via Google!");
                         } else {
-                            // If user, navigate to the home page
                             navigate("/");
                             toast.success("User signup successful via Google!");
                         }
@@ -151,7 +147,6 @@ const LoginPopup = ({ setShowLogin }) => {
                         toast.error("Google signup failed!");
                     }
                 } else {
-                    // For existing users, perform login
                     setToken(token);
                     localStorage.setItem("token", token);
                     setUserType(userType);
@@ -160,7 +155,6 @@ const LoginPopup = ({ setShowLogin }) => {
                     navigate("/");
 
                     setShowLogin(false);
-                    toast.success(`${userType === "shop" ? "Shop" : "User"} login successful via Google!`);
                 }
             } else {
                 toast.error(response.data.message || "Google Login Failed!");
@@ -182,7 +176,6 @@ const LoginPopup = ({ setShowLogin }) => {
             const response = await axios.post(newUrl, data);
 
             if (response.data.success) {
-                // Store token and user type
                 setToken(response.data.token);
                 localStorage.setItem("token", response.data.token);
 
@@ -190,22 +183,21 @@ const LoginPopup = ({ setShowLogin }) => {
                 localStorage.setItem("userType", userType);
                 setUserType(userType);
 
-                // Redirect and display success message
                 navigate("/");
                 setShowLogin(false);
-                toast.success(`${userType === "shop" ? "Shop" : "User"} ${currentState} successful!`);
+                // toast.success(`${userType === "shop" ? "Shop" : "User"} ${currentState} successful!`);
             } else if (response.data.message) {
-                toast.error(response.data.message); // Backend-specific error
+                toast.error(response.data.message);
             } else {
-                toast.error(`An error occurred during ${currentState}`); // Fallback error
+                toast.error(`An error occurred during ${currentState}`);
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'An unexpected error occurred.';
-            toast.error(errorMessage); // Display error toast
+            toast.error(errorMessage);
             console.error("Error during login or registration:", error);
         }
         finally {
-            setIsLoading(false); // Hide loader after API call finishes
+            setIsLoading(false);
         }
     };
 

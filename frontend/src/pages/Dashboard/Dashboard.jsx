@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { StoreContext } from '../../context/storeContext';
-import Loader from '../../components/Loader/Loader'; // Assuming you have a Loader component
+import Loader from '../../components/Loader/Loader';
 
 const Dashboard = () => {
   const [shopData, setShopData] = useState(null);
@@ -17,7 +17,7 @@ const Dashboard = () => {
       try {
         let token = localStorage.getItem('token');
         if (!token) {
-          navigate('/logout'); // Redirect to login if no token exists
+          navigate('/logout');
           return;
         }
 
@@ -42,7 +42,7 @@ const Dashboard = () => {
         }
 
         if (error.response?.data?.redirect) {
-          navigate(error.response.data.redirect); // Redirect to setup or subscription page
+          navigate(error.response.data.redirect);
           return toast.error(error.response.data.message || "Please complete your setup or renew your subscription.");
         }
 
@@ -55,7 +55,7 @@ const Dashboard = () => {
   }, [url, navigate]);
 
   if (loading) {
-    return <Loader />; // Use the loader component here
+    return <Loader />;
   }
 
   if (!shopData) {
@@ -68,7 +68,7 @@ const Dashboard = () => {
     <div className="dashboard">
       {shopData.shopImage && (
         <div className="shop-banner">
-          <img src={`${url}/images/${shopData.shopImage}`} alt="" className="shop-banner-image" />
+          <img src={`${shopData.shopImage}`} alt="" className="shop-banner-image" />
         </div>
       )}
 

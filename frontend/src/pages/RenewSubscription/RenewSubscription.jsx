@@ -9,7 +9,7 @@ const RenewSubscription = () => {
     const { url, token, logout } = useContext(StoreContext);
     const navigate = useNavigate();
 
-    const [selectedPlan, setSelectedPlan] = useState('99'); // Default subscription plan
+    const [selectedPlan, setSelectedPlan] = useState('99'); 
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [isScriptLoading, setIsScriptLoading] = useState(false);
 
@@ -68,7 +68,6 @@ const RenewSubscription = () => {
                 order_id: order.id,
                 handler: async function (response) {
                     try {
-                        // Call the backend to verify payment
                         verifyPayment(response);
                     } catch (error) {
                         console.error("Error during payment verification:", error);
@@ -98,7 +97,6 @@ const RenewSubscription = () => {
         }
     };
 
-    // Separate function to verify payment on the backend
     const verifyPayment = async (response) => {
         try {
             const verificationResponse = await axios.post(`${url}/api/payment/verifyRenewalPayment`, {
@@ -114,7 +112,7 @@ const RenewSubscription = () => {
 
             if (verificationResponse.data.success) {
                 toast.success("Subscription renewed successfully!");
-                navigate('/'); // Redirect to dashboard
+                navigate('/'); 
             } else {
                 toast.error("Payment verification failed.");
             }

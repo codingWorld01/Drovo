@@ -2,16 +2,16 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FoodItem from '../../components/FoodItem/FoodItem';
 import './SeeAll.css';
-import { StoreContext } from '../../context/storeContext'; // Import the StoreContext
+import { StoreContext } from '../../context/storeContext'; 
 import { assetsUser } from '../../assets/assetsUser';
 
 const SeeAll = () => {
     const location = useLocation();
     const { foodItems, shopId, title } = location.state || { foodItems: [], shopId: '', title: '' };
-    const [isAtTop, setIsAtTop] = useState(true); // Track scroll position
-    const [showCartIcon, setShowCartIcon] = useState(true); // For showing the cart icon
+    const [isAtTop, setIsAtTop] = useState(true); 
+    const [showCartIcon, setShowCartIcon] = useState(true); 
     const navigate = useNavigate();
-    const { getNumberOfItems } = useContext(StoreContext); // Access cart data from StoreContext
+    const { getNumberOfItems } = useContext(StoreContext); 
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -21,11 +21,10 @@ const SeeAll = () => {
     };
 
     const handleScroll = () => {
-        // Check if the page is at the top or scrolled
         if (window.scrollY === 0) {
-            setIsAtTop(true); // User is at the top
+            setIsAtTop(true); 
         } else {
-            setIsAtTop(false); // User has scrolled down
+            setIsAtTop(false); 
         }
     };
 

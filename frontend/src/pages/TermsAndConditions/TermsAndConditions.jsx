@@ -1,5 +1,5 @@
 import React from "react";
-import "./TermsAndConditions.css"; // Optional: Add custom styles
+import "./TermsAndConditions.css"; 
 
 const TermsAndConditions = () => {
     return (

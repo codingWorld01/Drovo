@@ -9,7 +9,7 @@ import { StoreContext } from '../../context/storeContext';
 const List = ({ url }) => {
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [isAtTop, setIsAtTop] = useState(true); // Track scroll position
+    const [isAtTop, setIsAtTop] = useState(true);
     let navigate = useNavigate();
     const { logout } = useContext(StoreContext);
 
@@ -44,7 +44,7 @@ const List = ({ url }) => {
             const response = await axios.post(`${url}/api/food/remove`, { id: foodId }, { headers: { token } });
             if (response.data.success) {
                 toast.success(response.data.message);
-                fetchList(); // Refresh list after deletion
+                fetchList();
             } else {
                 toast.error('Error removing the food item.');
             }
@@ -66,20 +66,17 @@ const List = ({ url }) => {
     };
 
     const handleScroll = () => {
-        // Check if the page is at the top or scrolled
         if (window.scrollY === 0) {
-            setIsAtTop(true);  // User is at the top
+            setIsAtTop(true);
         } else {
-            setIsAtTop(false); // User has scrolled down
+            setIsAtTop(false);
         }
     };
 
     useEffect(() => {
         fetchList();
-        // Add scroll event listener
         window.addEventListener('scroll', handleScroll);
 
-        // Cleanup the event listener when the component unmounts
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
@@ -96,7 +93,7 @@ const List = ({ url }) => {
                 <div className="list-container">
                     {list.map((item, index) => (
                         <div key={index} className="list-item">
-                            <img src={`${url}/images/${item.image}`} alt={item.name} />
+                            <img src={`${item.image}`} alt={item.name} />
                             <div className="info-row">
                                 <p><span>Name:</span> {item.name}</p>
                                 <p><span>Category:</span> {item.category}</p>

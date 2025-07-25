@@ -43,8 +43,8 @@ const shopAuthMiddleware = async (req, res, next) => {
             });
         }
 
-        req.shop = shop; // Attach the shop to the request object for use in the route handler
-        next(); // Proceed to the next middleware/route handler
+        req.shop = shop; 
+        next(); 
     } catch (error) {
         console.error("Token verification failed:", error);
         if (error.name === 'TokenExpiredError') {

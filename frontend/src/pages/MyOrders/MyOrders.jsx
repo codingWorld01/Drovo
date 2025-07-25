@@ -8,11 +8,11 @@ import { useNavigate } from "react-router-dom";
 const MyOrders = () => {
   const { url, token, logout } = useContext(StoreContext);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false); // State to manage loading
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
-    setLoading(true); // Show skeleton
+    setLoading(true); 
     try {
       const response = await axios.post(
         url + "/api/order/userorders",
@@ -28,7 +28,7 @@ const MyOrders = () => {
       }
       console.error("Error fetching orders:", error);
     } finally {
-      setLoading(false); // Hide skeleton
+      setLoading(false); 
     }
   };
 
@@ -47,15 +47,15 @@ const MyOrders = () => {
   };
 
   const handleViewDetails = (orderId) => {
-    navigate(`/myorders/${orderId}`); // Navigate to the details page
+    navigate(`/myorders/${orderId}`); 
   };
 
   const handleBack = () => {
-    navigate("/"); // Navigate back to the home page
+    navigate("/"); 
   };
 
   const handleRefresh = () => {
-    fetchOrders(); // Refresh orders by re-fetching the data
+    fetchOrders(); 
   };
 
   useEffect(() => {

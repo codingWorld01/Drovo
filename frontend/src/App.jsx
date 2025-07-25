@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import NavbarUser from "./components/NavbarUser/NavbarUser";
 import NavbarAdmin from "./components/NavbarAdmin/NavbarAdmin";
@@ -24,7 +24,7 @@ import NotFound from './components/NotFound/NotFound';
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import OrderDetails from './pages/OrderDetails/OrderDetails';
-import EditPage from "./pages/EditPage/EditPage"; // Import the EditPage component
+import EditPage from "./pages/EditPage/EditPage";
 import SeeAll from "./pages/SeeAll/SeeAll";
 
 const App = () => {
@@ -35,7 +35,7 @@ const App = () => {
     <>
       <Toaster position="top-right" reverseOrder={false} />
 
-      <ScrollToTop /> 
+      <ScrollToTop />
 
       {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
       <div className={`app-${userType}`}>
@@ -44,7 +44,7 @@ const App = () => {
             <NavbarUser setShowLogin={setShowLogin} />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/cart" element={<Cart setShowLogin={setShowLogin}/>} />
+              <Route path="/cart" element={<Cart setShowLogin={setShowLogin} />} />
               <Route path="/order" element={<PlaceOrder />} />
               <Route path="/verify" element={<Verify />} />
               <Route path="/myorders" element={<MyOrders />} />
@@ -80,10 +80,10 @@ const App = () => {
                       <Routes>
                         <Route path="/renew-subscription" element={<RenewSubscription />} />
                         <Route path="/" element={<Dashboard />} />
-                        <Route path="/dashboard/add" element={<Add url={url} />} />
+                        <Route path="/dashboard/add" element={<Add />} />
                         <Route path="/dashboard/list" element={<List url={url} />} />
                         <Route path="/dashboard/orders" element={<Orders url={url} />} />
-                        <Route path="/dashboard/edit/:id" element={<EditPage url={url} />} /> 
+                        <Route path="/dashboard/edit/:id" element={<EditPage url={url} />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </div>
