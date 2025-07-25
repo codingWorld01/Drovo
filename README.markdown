@@ -41,7 +41,7 @@ Drovo is a full-stack web application designed for food delivery, connecting use
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/drovo.git
+git clone https://github.com/codingWorld01/Drovo.git
 cd drovo
 ```
 
