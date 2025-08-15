@@ -15,12 +15,16 @@ const ShopSchema = new mongoose.Schema({
         // required: true
     },
     shopAddress: {
-        address: { type: String },
-        latitude: { type: String },
-        longitude: { type: String }
+        address: String,
+        street2: String,
+        city: String,
+        state: String,
+        postal_code: String,
+        latitude: Number,
+        longitude: Number,
     },
     phone: {
-        type: String
+        type: Number
     },
     subscription: {
         type: String,
@@ -41,15 +45,12 @@ const ShopSchema = new mongoose.Schema({
         razorpayPaymentId: { type: String },
         paymentDate: { type: Date },
     },
-
     bankDetails: {
-    accountHolderName: { type: String },
-    accountNumber: { type: String },
-    ifscCode: { type: String },
-    bankName: { type: String }
-  },
-  
-  razorpayAccountId: { type: String },
+        type: String
+    },
+    razorpayAccountId: { type: String },
+    browserNotificationOptIn: { type: Boolean, default: false },
+    fcmToken: { type: String, default: '' }
 
 });
 

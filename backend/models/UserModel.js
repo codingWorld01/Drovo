@@ -17,7 +17,9 @@ const userSchema = new mongoose.Schema({
     cartData: {
         type: Object,
         default: {}
-    }
+    },
+    browserNotificationOptIn: { type: Boolean, default: false },
+    fcmToken: { type: String, default: '' } 
 }, { minimize: false });
 
 
