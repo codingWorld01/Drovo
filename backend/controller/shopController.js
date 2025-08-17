@@ -76,11 +76,18 @@ const fetchAllShops = async (req, res) => {
 
             // Sort shops by distance (nearest first)
             shops.sort((a, b) => a.distance - b.distance);
+
+            res.status(200).json({
+                success: true,
+                data: shops,
+            });
         }
+
+        console.log("Shops ", shops)
 
         res.status(200).json({
             success: true,
-            data: shops,
+            data: shops.slice(0, 6),
         });
     } catch (error) {
         res.status(500).json({
