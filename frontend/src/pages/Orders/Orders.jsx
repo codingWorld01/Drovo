@@ -133,10 +133,9 @@ const Orders = ({ url }) => {
                   <p className="order-item-name">{order.address.firstName} {order.address.lastName}</p>
                   <div className="order-item-address">
                     <p>{order.address.street}, {order.address.flat}</p>
-                    <p>{order.address.floor}, {order.address.landmark}</p>
+                    <p>{order.address.floor} {order.address.floor && order.address.landmark ? " ," : ""} {order.address.landmark}</p>
                   </div>
-                  <p className="order-item-phone">{order.address.phone}</p>
-                  <p><strong>Payment Method:</strong> {order.paymentMethod == "COD" ? "Cash on Delivery" : "Online Payment"}</p>
+                  <div className="order-item-phone"><div>{order.address.phone}</div> <div className='payment'>Payment Method: <strong>{order.paymentMethod == "COD" ? "Cash on Delivery" : "Online Payment"}</strong></div></div>
                   <button
                     className="direction-button"
                     onClick={() => getDirections(order.address.latitude, order.address.longitude)}

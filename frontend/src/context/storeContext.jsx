@@ -16,7 +16,6 @@ export const StoreContextProvider = (props) => {
 
     // Add food item to cart for a specific shop
     const addToCart = async (itemId, currentShopId) => {
-
         setCartItems((prev) => {
             const shopCart = prev[currentShopId] || {};  // Get cart for current shop
             const updatedCart = { ...shopCart };

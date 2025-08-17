@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { assetsUser } from "../../assets/assetsUser";
 import Loader from "../../components/Loader/Loader";
+import { Locate } from 'lucide-react';
 
 const PlaceOrder = () => {
   const { getTotalCartAmount, token, food_list, cartItems, url, shopId, setCartItems, logout } = useContext(StoreContext);
@@ -13,7 +14,6 @@ const PlaceOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [addressError, setAddressError] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("COD");
-
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -25,11 +25,36 @@ const PlaceOrder = () => {
     floor: "",
     landmark: "",
   });
-
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [isAddressFilled, setIsAddressFilled] = useState(false);
   const [isCalculatingDistance, setIsCalculatingDistance] = useState(false);
 
+  const convertCoordinatesToAddress = (latitude, longitude) => {
+    try {
+      const geocoder = new window.google.maps.Geocoder();
+      const latLng = new window.google.maps.LatLng(latitude, longitude);
+
+      geocoder.geocode({ location: latLng }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          let address = results[0].formatted_address;
+          // Remove Plus Code (e.g., "43PP+37X, ") from the address
+          address = address.replace(/^[A-Z0-9+]+,\s*/, '').trim();
+          setData((prevData) => ({ ...prevData, street: address, latitude, longitude }));
+          setAddressError("");
+          setIsAddressFilled(true);
+          toast.success("Location fetched successfully!");
+          setAddressError("If Address seems incorrect, please use autocomplete to fix it.");
+        } else {
+          setAddressError("Unable to fetch address. Please try again.");
+          toast.error("Unable to fetch address. Please try again.");
+        }
+      });
+    } catch (error) {
+      console.error("Error converting coordinates to address:", error);
+      setAddressError("Something went wrong while fetching the address.");
+      toast.error("Something went wrong!");
+    }
+  };
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -38,6 +63,9 @@ const PlaceOrder = () => {
       [name]: value,
       ...(name === "street" ? { latitude: "", longitude: "" } : {}),
     }));
+    if (name === "street") {
+      setIsAddressFilled(!!value);
+    }
   };
 
   const getCurrentLocation = () => {
@@ -47,26 +75,13 @@ const PlaceOrder = () => {
           const { latitude, longitude } = position.coords;
           setData((prevData) => ({ ...prevData, latitude, longitude }));
           setIsAddressFilled(true);
-
-          const geocoder = new window.google.maps.Geocoder();
-          const latLng = new window.google.maps.LatLng(latitude, longitude);
-
-          geocoder.geocode({ location: latLng }, (results, status) => {
-            if (status === "OK" && results[0]) {
-              const address = results[0].formatted_address;
-              setData((prevData) => ({ ...prevData, street: address }));
-              setAddressError("");
-              toast.success("Location fetched successfully!");
-              setAddressError("If Address seems incorrect, please use autocomplete to fix it.");
-            } else {
-              toast.error("Unable to fetch address. Please try again.");
-            }
-          });
+          convertCoordinatesToAddress(latitude, longitude);
         },
         () => {
           setAddressError("Unable to access location. Please enable location services or use autocomplete.");
           toast.error("Unable to access location. Please enable location services.");
-        }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
       setAddressError("Geolocation is not supported by this browser.");
@@ -77,6 +92,16 @@ const PlaceOrder = () => {
   useEffect(() => {
     if (Object.keys(cartItems).length === 0 || getTotalCartAmount() === 0) {
       return navigate("/");
+    }
+
+    const storedLocation = JSON.parse(localStorage.getItem("Location"));
+    if (storedLocation && storedLocation.latitude && storedLocation.longitude) {
+      setData((prev) => ({
+        ...prev,
+        latitude: storedLocation.latitude,
+        longitude: storedLocation.longitude,
+      }));
+      convertCoordinatesToAddress(storedLocation.latitude, storedLocation.longitude);
     }
 
     if (window.google) {
@@ -91,7 +116,9 @@ const PlaceOrder = () => {
         if (place.geometry) {
           const latitude = place.geometry.location.lat();
           const longitude = place.geometry.location.lng();
-          const address = place.formatted_address || "";
+          let address = place.formatted_address || "";
+          // Remove Plus Code from autocomplete address
+          address = address.replace(/^[A-Z0-9+]+,\s*/, '').trim();
           setData((prevData) => ({
             ...prevData,
             street: address,
@@ -100,6 +127,10 @@ const PlaceOrder = () => {
           }));
           setAddressError("");
           setIsAddressFilled(true);
+          toast.success("Address selected successfully!");
+        } else {
+          setAddressError("Invalid address selected. Please try again.");
+          toast.error("Invalid address selected. Please try again.");
         }
       });
     }
@@ -117,7 +148,7 @@ const PlaceOrder = () => {
 
   useEffect(() => {
     const fetchDistanceAndCharge = async () => {
-      if (shopId) {
+      if (shopId && data.latitude && data.longitude) {
         const shopCoordinates = await axios
           .get(`${url}/api/shops/${shopId}`, { headers: { token } })
           .then((res) => res.data.data.coordinates)
@@ -168,7 +199,7 @@ const PlaceOrder = () => {
     if (data.latitude && data.longitude) {
       fetchDistanceAndCharge();
     }
-  }, [data.latitude, data.longitude]);
+  }, [data.latitude, data.longitude, shopId, token, url]);
 
   const loadRazorpayScript = async () => {
     return new Promise((resolve) => {
@@ -186,10 +217,11 @@ const PlaceOrder = () => {
         amount: getTotalCartAmount(),
         deliveryCharge,
         token,
-        shopId // Include shopId
+        shopId
       }, { headers: { token } });
 
       const { order } = response.data;
+      console.log("order", order)
       return order;
     } catch (error) {
       if (error.response?.status === 401 && error.response.data.message === 'Token expired') {
@@ -351,6 +383,7 @@ const PlaceOrder = () => {
               value={data.firstName}
               type="text"
               placeholder="First Name"
+              autoComplete="off"
             />
             <input
               required
@@ -359,12 +392,14 @@ const PlaceOrder = () => {
               value={data.lastName}
               type="text"
               placeholder="Last Name"
+              autoComplete="off"
             />
           </div>
 
           <button type="button" onClick={getCurrentLocation} className="current-location-btn">
             Use Current Location
-            <img src={assetsUser.location} alt="" className="button-icon" />
+            {/* <img src={assetsUser.location} alt="" className="button-icon" /> */}
+            <Locate />
           </button>
           <p className="or-separator">OR</p>
 
@@ -375,8 +410,8 @@ const PlaceOrder = () => {
             name="street"
             onChange={onChangeHandler}
             value={data.street}
-            type="text"
-            placeholder="Select nearby location..."
+            autoComplete="off"
+            placeholder="Select nearby location (e.g., Dhantoli, Nagpur)"
             rows="2"
           ></textarea>
 
@@ -387,6 +422,7 @@ const PlaceOrder = () => {
                 onChange={onChangeHandler}
                 value={data.flat}
                 type="text"
+                autoComplete="off"
                 placeholder="Flat / House no / Building name *"
                 required
               />
@@ -395,6 +431,7 @@ const PlaceOrder = () => {
                   name="floor"
                   onChange={onChangeHandler}
                   value={data.floor}
+                  autoComplete="off"
                   type="text"
                   placeholder="Floor (optional)"
                 />
@@ -403,6 +440,7 @@ const PlaceOrder = () => {
                   name="phone"
                   onChange={onChangeHandler}
                   value={data.phone}
+                  autoComplete="off"
                   type="text"
                   placeholder="Phone"
                 />
@@ -411,12 +449,12 @@ const PlaceOrder = () => {
                 name="landmark"
                 onChange={onChangeHandler}
                 value={data.landmark}
+                autoComplete="off"
                 type="text"
                 placeholder="Nearby landmark (optional)"
               />
             </>
           )}
-
         </div>
 
         <div className="place-order-right">

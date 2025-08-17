@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,8 +8,14 @@
   </head>
   <body>
     <div id="root"></div>
+    <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-messaging.js"></script>
     <script type="module" src="./src/main.jsx"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuGGM1sauESOPnA1dJzvREBfr_VWdgfVY&libraries=places"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=%VITE_GOOGLE_MAPS_API%&libraries=places"
+      async
+      defer
+    ></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </body>
 </html>

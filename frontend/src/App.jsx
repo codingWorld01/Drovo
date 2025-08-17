@@ -26,6 +26,7 @@ import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import OrderDetails from './pages/OrderDetails/OrderDetails';
 import EditPage from "./pages/EditPage/EditPage";
 import SeeAll from "./pages/SeeAll/SeeAll";
+import Chatbot from "./components/Chatbot/Chatbot";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -94,6 +95,7 @@ const App = () => {
           </>
         )}
       </div>
+      <Chatbot />
 
       <Footer />
     </>
