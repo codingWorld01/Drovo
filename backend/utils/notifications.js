@@ -1,4 +1,3 @@
-
 import admin from 'firebase-admin';
 import nodemailer from 'nodemailer';
 import { Client } from 'whatsapp-web.js';
@@ -14,6 +13,28 @@ admin.initializeApp({
   }),
 });
 
+// Puppeteer configuration for different environments
+const getPuppeteerConfig = (showBrowser = false) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  return {
+    headless: isProduction ? true : !showBrowser,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--no-first-run',
+      '--no-zygote',
+      '--single-process',
+      '--disable-web-security',
+      '--disable-features=VizDisplayCompositor'
+    ],
+    // Remove hardcoded Windows path - let Puppeteer find Chrome automatically
+    executablePath: isProduction ? undefined : undefined
+  };
+};
+
 // Initialize whatsapp-web.js with session persistence
 let client;
 if (fs.existsSync('./session.json')) {
@@ -21,12 +42,8 @@ if (fs.existsSync('./session.json')) {
     const sessionData = JSON.parse(fs.readFileSync('./session.json'));
     client = new Client({
       session: sessionData,
-      puppeteer: {
-        headless: true, // Run in headless mode after initial setup
-        executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--ignore-certificate-errors'],
-      },
-      webVersion: '2.2412.54', // Stable WhatsApp Web version
+      puppeteer: getPuppeteerConfig(false), // Always headless with existing session
+      webVersion: '2.2412.54',
     });
   } catch (error) {
     console.error('Error loading session:', error);
@@ -36,11 +53,7 @@ if (fs.existsSync('./session.json')) {
 
 if (!client) {
   client = new Client({
-    puppeteer: {
-      headless: false, // Show browser for initial QR code scanning
-      executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--ignore-certificate-errors'],
-    },
+    puppeteer: getPuppeteerConfig(true), // Show browser for initial QR in dev, headless in prod
     webVersion: '2.2412.54',
   });
 }
@@ -104,7 +117,7 @@ export const sendWhatsAppNotification = async (phone, message) => {
 // Send Email Notification
 export const sendEmailNotification = async (to, subject, text) => {
   try {
-    const transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransporter({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
