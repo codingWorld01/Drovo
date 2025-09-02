@@ -22,7 +22,7 @@
 }
 
 .hero-text h1 {
-  font-size: 3.5rem;
+  font-size: 2.8rem;
   line-height: 1.2;
   font-weight: 800;
   color: #333;
@@ -59,6 +59,32 @@
   background-color: rgb(255, 71, 39);
 }
 
+/* Dual CTA Buttons Container */
+.cta-buttons-container {
+  display: flex;
+  gap: 15px;
+  width: 90%;
+  margin-top: 20px;
+}
+
+.cta-button.primary {
+  flex: 1;
+  width: auto;
+}
+
+.cta-button.secondary {
+  flex: 1;
+  width: auto;
+  background-color: transparent;
+  color: tomato;
+  border: 2px solid tomato;
+}
+
+.cta-button.secondary:hover {
+  background-color: tomato;
+  color: white;
+}
+
 .hero-image {
   max-width: 500px;
   animation: fadeIn 1.5s ease-in-out;
@@ -73,54 +99,66 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Location Input Section */
-.location-input {
+
+.input-container {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  width: 100%;
 }
 
-.location-input button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  background-color: rgb(0, 191, 255);
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.location-input button:hover {
-  background-color: rgb(0, 141, 187);
-  transform: translateY(-2px);
-}
-
-.location-input p {
-  font-size: 1rem;
-  color: #555;
-  font-weight: 500;
-}
-
-.location-input input {
-  padding: 10px 15px;
+.input-container input {
+  padding: 12px 50px 12px 20px;
   font-size: 1rem;
   border-radius: 30px;
-  border: 1px solid #ccc;
-  width: 300px;
-  max-width: 100%;
+  border: 2px solid #e0e0e0;
+  width: 100%;
   background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.location-input input:focus {
+.input-container input:focus {
   outline: none;
   border-color: tomato;
+  box-shadow: 0 4px 20px rgba(255, 99, 71, 0.2);
+}
+
+.input-container input::placeholder {
+  color: #999;
+}
+
+.location-icon-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: tomato;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.location-icon-btn:hover {
+  background: #e55a4f;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.location-icon-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: translateY(-50%);
+}
+
+.location-icon-btn:disabled:hover {
+  transform: translateY(-50%);
 }
 
 /* Error and Message Styles */
@@ -339,15 +377,28 @@
     font-weight: 600;
   }
 
-  .location-input {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+  .input-container {
+    max-width: 100%;
   }
 
-  .location-input input {
+  .input-container input {
+    padding: 10px 45px 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  .location-icon-btn {
+    width: 32px;
+    height: 32px;
+    right: 6px;
+  }
+
+  .cta-buttons-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .cta-button {
     width: 100%;
-    max-width: 100%;
   }
 }
 
@@ -356,17 +407,18 @@
     font-size: 2.1rem;
   }
 
-  .location-input button {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+  .input-container input {
+    padding: 8px 40px 8px 12px;
+    font-size: 0.8rem;
   }
 
-  .location-input input {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+  .location-icon-btn {
+    width: 28px;
+    height: 28px;
+    right: 5px;
   }
 
-  .location-input p {
-    font-size: 0.9rem;
+  .cta-buttons-container {
+    gap: 8px;
   }
 }

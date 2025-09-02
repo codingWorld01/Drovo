@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './Header.css';
 import { assetsUser } from '../../../assets/assetsUser';
 
@@ -56,7 +56,6 @@ const Header = () => {
     }
   }, [isPaused]);
 
-  // Pause slideshow on hover
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
 
