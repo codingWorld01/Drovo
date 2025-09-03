@@ -41,6 +41,13 @@ a {
   display: flex;
 }
 
+.main-content {
+  flex: 1;
+  margin-left: 18%;
+  background: #f8fafc;
+  min-height: calc(100vh - 60px);
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -55,5 +62,14 @@ a {
 @media (max-width: 768px) {
   .app-user {
     width: 100%;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    padding-bottom: 80px;
+  }
+  
+  .app-admin {
+    padding-bottom: 80px;
   }
 }

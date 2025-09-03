@@ -95,15 +95,15 @@ const StatisticsSection = () => {
           {stats.map((stat) => {
             const IconComponent = stat.icon;
             return (
-              <div key={stat.id} className="stat-card">
+              <div key={stat.id} className="stat-card-home">
                 <div className="stat-icon">
                   <IconComponent size={40} />
                 </div>
-                <div className="stat-number">
+                <div className="stat-number-home">
                   {counters[stat.id].toLocaleString()}
                   {stat.suffix}
                 </div>
-                <div className="stat-label">{stat.label}</div>
+                <div className="stat-label-home">{stat.label}</div>
               </div>
             );
           })}

@@ -3980,7 +3980,7 @@ p strong {
   margin-top: 20px;
   text-align: center;
 }
-.floating-cart {
+/* .floating-cart {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -3994,7 +3994,7 @@ p strong {
   box-shadow: 0 4px 10px #0003;
   cursor: pointer;
   z-index: 999;
-}
+} */
 .go-back-container {
   text-align: center;
   margin-top: 20px;

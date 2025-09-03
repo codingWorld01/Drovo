@@ -35,7 +35,7 @@ const Cart = ({ setShowLogin }) => {
     if (shopId) {
       fetchShopDetails();
     }
-  }, [shopId]);
+  }, [logout, shopId, url]);
 
   const isEligibleForCheckout = getTotalCartAmount() >= 60;
 
@@ -76,90 +76,136 @@ const Cart = ({ setShowLogin }) => {
     }
   };
 
-
-
   // Check if there are any items in the cart for this shop
   const hasItemsInCart = Object.keys(cartItems[shopId] || {}).some(itemId => cartItems[shopId][itemId] > 0);
 
   return (
-    <div className="cart-container">
-      <div className="cart">
+    <div className="cart-page">
+      <div className="cart-header">
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          <span className="back-icon">←</span>
+          Back
+        </button>
+        <h1>Your Cart</h1>
         {shopDetails && hasItemsInCart && (
-          <div className="cart-shop-name">
-            <h2>{shopDetails.name}</h2>
+          <div className="shop-badge">
+            <span className="shop-icon">🏪</span>
+            {shopDetails.name}
           </div>
         )}
+      </div>
 
-        {!hasItemsInCart ? (
-          <div className="empty-cart-container">
-            <img
-              src={assetsUser.empty_cart}
-              alt="Empty Cart"
-              className="empty-cart-image"
-            />
-            <p className="empty-cart-message">Your cart is empty. Please add some delicious items!</p>
-          </div>
-        ) : (
-          <>
-            <div className="cart-items">
-              <div className="cart-items-title">
-                <p>Item</p>
-                <p>Name</p>
-                <p>Price</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quantity</p>
-                <p>Total</p>
-                <p></p>
-              </div>
-              {food_list.map((item, index) => {
-                const itemQuantity = cartItems[shopId]?.[item._id] || 0;
+      {!hasItemsInCart ? (
+        <div className="empty-cart">
+          <div className="empty-cart-icon">🛒</div>
+          <h2>Your cart is empty</h2>
+          <p>Add some delicious items to get started!</p>
+          <button className="browse-btn" onClick={() => navigate('/')}>
+            Browse Items
+          </button>
+        </div>
+      ) : (
+        <div className="cart-content">
+          <div className="cart-items">
+            {food_list.map((item, index) => {
+              const itemQuantity = cartItems[shopId]?.[item._id] || 0;
 
-                if (itemQuantity > 0) {
-                  return (
-                    <div key={index} className="cart-item">
+              if (itemQuantity > 0) {
+                return (
+                  <div key={index} className="cart-item">
+                    <div className="item-image">
                       <img src={item.image} alt={item.name} />
-                      <p>{item.name}</p>
-                      <p>&#8377;{item.price}</p>
-                      <p>
-                        <button onClick={() => removeFromCart(item._id, shopId)} className="quantity-btn">-</button>
-                        {getDisplayQuantity(itemQuantity * item.quantity, item.unit)} {/* Adjusted to show dynamic unit */}
-                        <button onClick={() => addToCart(item._id, shopId)} className="quantity-btn">+</button>
-                      </p>
-                      <p>&#8377;{item.price * itemQuantity}</p>
-                      <span onClick={() => deleteFromCart(item._id, shopId)} className="remove-cross">×</span>
                     </div>
-                  );
-                }
-                return null;
-              })}
+                    
+                    <div className="item-details">
+                      <h3 className="item-name">{item.name}</h3>
+                      <p className="item-price">₹{item.price}</p>
+                      <p className="item-quantity-display">
+                        {getDisplayQuantity(itemQuantity * item.quantity, item.unit)}
+                      </p>
+                    </div>
+
+                    <div className="item-controls">
+                      <div className="quantity-controls">
+                        <button 
+                          className="quantity-btn minus" 
+                          onClick={() => removeFromCart(item._id, shopId)}
+                        >
+                          −
+                        </button>
+                        <span className="quantity-display">{itemQuantity}</span>
+                        <button 
+                          className="quantity-btn plus" 
+                          onClick={() => addToCart(item._id, shopId)}
+                        >
+                          +
+                        </button>
+                      </div>
+                      
+                      <div className="item-total">₹{item.price * itemQuantity}</div>
+                      
+                      <button 
+                        className="remove-btn" 
+                        onClick={() => deleteFromCart(item._id, shopId)}
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </div>
+
+          <div className="cart-summary">
+            <div className="promo-section">
+              <div className="promo-input-group">
+                <input 
+                  type="text" 
+                  placeholder="Enter promo code" 
+                  value={promoCode} 
+                  onChange={(e) => setPromoCode(e.target.value)} 
+                  className="promo-input" 
+                />
+                <button onClick={handlePromoCode} className="promo-btn">
+                  Apply
+                </button>
+              </div>
             </div>
 
-            <div className="cart-summary">
-              <div className="cart-total">
-                <p className="total-amount">Total: &#8377;{getTotalCartAmount()}</p>
+            <div className="total-section">
+              <div className="total-row">
+                <span>Subtotal</span>
+                <span>₹{getTotalCartAmount()}</span>
               </div>
-
-              <div className="promo-code">
-                <input type="text" placeholder="Promo code" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} className="promo-input" />
-                <button onClick={handlePromoCode} className="promo-btn">Apply</button>
+              <div className="total-row">
+                <span>Delivery Fee</span>
+                <span>₹0</span>
+              </div>
+              <div className="total-row final-total">
+                <span>Total</span>
+                <span>₹{getTotalCartAmount()}</span>
               </div>
             </div>
+
+            {!isEligibleForCheckout && (
+              <div className="min-purchase-notice">
+                <span className="notice-icon">ℹ️</span>
+                Minimum purchase of ₹60 required to checkout
+              </div>
+            )}
 
             <button
               onClick={handleCheckout}
               disabled={!isEligibleForCheckout}
-              className={`checkout-btn ${isEligibleForCheckout ? 'active' : 'disabled'}`}
+              className={`checkout-btn ${isEligibleForCheckout ? 'enabled' : 'disabled'}`}
             >
-              Proceed to Checkout
+              {isEligibleForCheckout ? 'Proceed to Checkout' : `Add ₹${60 - getTotalCartAmount()} more`}
             </button>
-
-            {!isEligibleForCheckout && (
-              <p className="min-purchase-msg">
-                Minimum purchase of ₹60 required to checkout.
-              </p>
-            )}
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

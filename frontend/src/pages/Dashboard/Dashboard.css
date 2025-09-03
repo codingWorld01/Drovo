@@ -1,136 +1,135 @@
+/* Simple Dashboard Styles */
 .dashboard {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    background-color: #f7f8fc;
-    padding: 20px 10px;
+  padding: 20px;
+  min-height: 100vh;
 }
 
-.shop-banner {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-    margin-bottom: 30px;
-    border-radius: 15px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+.dashboard-header {
+  margin-bottom: 30px;
 }
 
-.shop-banner-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.85);
+.dashboard-header h1 {
+  font-size: 2rem;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-weight: 600;
 }
 
-
-.dashboard-content {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+.dashboard-header p {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
 }
 
-.dashboard-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-.shop-info,
-.subscription-info,
-.payment-info {
-    padding: 20px;
-    border-radius: 12px;
-    background: linear-gradient(to right, #f9f9f9, #ffffff);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
 }
 
-
-.subscription-info:hover,
-.payment-info:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
 }
 
-.shop-info h3,
-.subscription-info h3,
-.payment-info h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #444;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
+.stat-label {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.shop-info p,
-.subscription-info p,
-.payment-info p {
-    font-size: 16px;
-    margin: 8px 0;
-    color: #555;
+/* Shop Information */
+.shop-info {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
 }
 
-p strong {
-    font-weight: bold;
-    color: #222;
+.shop-info h3 {
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.map-section {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
 }
 
-.map-section h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #444;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
+.info-item {
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
 }
 
+.info-item strong {
+  color: #374151;
+  font-weight: 600;
+}
 
-/* Responsive Adjustments */
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    .shop-banner {
-        height: 200px;
-    }
+  .dashboard {
+    padding: 15px;
+  }
 
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
 
-    .welcome-message {
-        display: none;
-        /* Hide welcome message on mobile */
-    }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
 
-    .dashboard-content {
-        padding: 15px;
-    }
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .shop-info {
+    padding: 16px;
+  }
 }
 
-@media (max-width: 576px) {
-    .shop-banner {
-        height: 150px;
-    }
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 10px;
+  }
 
-    .welcome-message {
-        display: none;
-        /* Hide welcome message on mobile */
-    }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 
+  .stat-card {
+    padding: 12px;
+  }
 
-    .dashboard-info {
-        grid-template-columns: 1fr;
-    }
-
-    .shop-info,
-    .subscription-info,
-    .payment-info {
-        padding: 15px;
-    }
+  .stat-number {
+    font-size: 1.5rem;
+  }
 }

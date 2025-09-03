@@ -1,9 +1,11 @@
+/* Desktop Sidebar */
 .sidebar {
     width: 18%;
     min-height: 100vh;
     border: 1.5px solid #a9a9a9;
     border-top: 0;
     font-size: max(1vw, 10px);
+    background: white;
 }
 
 .sidebar-options {
@@ -23,6 +25,8 @@
     padding: 8px 10px;
     border-radius: 3px 0px 0px 3px;
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 }
 
 .sidebar img {
@@ -30,12 +34,91 @@
     height: 2rem;
 }
 
+.sidebar-icon {
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .sidebar-option.active {
     background-color: #fff0ed;
     border-color: tomato;
 }
 
-@media (max-width: 900px) {
+.sidebar-option p {
+    margin: 0;
+}
+
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    padding: 8px 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px;
+    text-decoration: none;
+    color: #64748b;
+    transition: color 0.3s ease;
+}
+
+.nav-item.active {
+    color: tomato;
+}
+
+.nav-icon {
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.nav-item.add-item .nav-icon {
+    background: tomato;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    
+    .mobile-bottom-nav {
+        display: flex;
+    }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
     .sidebar-option p {
         display: none;
     }
@@ -43,7 +126,6 @@
     .sidebar-option {
         padding: 8px 5px;
     }
-
 
     .sidebar img {
         margin-right: 10px;

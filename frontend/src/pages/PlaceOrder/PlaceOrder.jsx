@@ -134,7 +134,7 @@ const PlaceOrder = () => {
         }
       });
     }
-  }, []);
+  }, [cartItems, getTotalCartAmount, navigate]);
 
   const validatePhoneNumber = (phone) => {
     const phoneRegex = /^[789]\d{9}$/;
@@ -460,10 +460,31 @@ const PlaceOrder = () => {
         <div className="place-order-right">
           <div className="payment-method">
             <p>Payment Method</p>
-            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-              <option value="COD">Cash on Delivery</option>
-              <option value="Online">Online Payment</option>
-            </select>
+            <div className="payment-buttons">
+              <button
+                type="button"
+                className={`payment-btn ${paymentMethod === "COD" ? "active" : ""}`}
+                onClick={() => setPaymentMethod("COD")}
+              >
+                <span className="payment-icon">💵</span>
+                <div className="payment-text">
+                  <span className="payment-title">Cash on Delivery</span>
+                  <span className="payment-subtitle">Pay when you receive</span>
+                </div>
+              </button>
+              
+              <button
+                type="button"
+                className={`payment-btn ${paymentMethod === "Online" ? "active" : ""}`}
+                onClick={() => setPaymentMethod("Online")}
+              >
+                <span className="payment-icon">💳</span>
+                <div className="payment-text">
+                  <span className="payment-title">Online Payment</span>
+                  <span className="payment-subtitle">Pay now securely</span>
+                </div>
+              </button>
+            </div>
           </div>
           <div className="cart-total-final">
             <h2>Cart Total</h2>

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import "./Home.css";
 import Header from "../../components/NavbarUser/Header/Header";
 import axios from "axios";
@@ -24,33 +24,36 @@ const Home = () => {
   const { url, logout } = useContext(StoreContext);
   const shopSectionRef = useRef(null);
 
-  const fetchShops = async (latitude, longitude, radius = 10) => {
-    try {
-      const params =
-        latitude && longitude ? { latitude, longitude, radius } : {};
-      const response = await axios.get(`${url}/api/shops/all`, { params });
-      console.log(response.data.data);
-      setShops(response.data.data);
-      if (latitude && longitude && response.data.data.length === 0) {
-        setLocationError(
-          `No shops available within ${radius} km of your location.`
-        );
-      } else {
-        setLocationError("");
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        if (error.response.data.message === "Token expired") {
-          logout();
+  const fetchShops = useCallback(
+    async (latitude, longitude, radius = 10) => {
+      try {
+        const params =
+          latitude && longitude ? { latitude, longitude, radius } : {};
+        const response = await axios.get(`${url}/api/shops/all`, { params });
+        console.log(response.data.data);
+        setShops(response.data.data);
+        if (latitude && longitude && response.data.data.length === 0) {
+          setLocationError(
+            `No shops available within ${radius} km of your location.`
+          );
+        } else {
+          setLocationError("");
         }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          if (error.response.data.message === "Token expired") {
+            logout();
+          }
+        }
+        console.error("Error fetching shops:", error);
+        setLocationError("Failed to fetch shops. Please try again.");
+        // toast.error('Failed to fetch shops. Please try again.');
+      } finally {
+        setLoading(false);
       }
-      console.error("Error fetching shops:", error);
-      setLocationError("Failed to fetch shops. Please try again.");
-      // toast.error('Failed to fetch shops. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [url, logout]
+  );
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -237,7 +240,10 @@ const Home = () => {
               <button className="cta-button primary" onClick={handleSearch}>
                 Search
               </button>
-              <button className="cta-button secondary" onClick={handleJoinDrovo}>
+              <button
+                className="cta-button secondary"
+                onClick={handleJoinDrovo}
+              >
                 Join Drovo
               </button>
             </div>
@@ -313,8 +319,8 @@ const Home = () => {
             <img src={assetsUser.fresh} alt="Fresh Products" />
             <h3>Fresh Products</h3>
             <p>
-              We deliver only the freshest dairy, grocery, and bakery products
-              directly to your door.
+              We deliver fresh dairy, grocery, and bakery products straight to
+              your door.
             </p>
           </div>
           <div className="feature">
@@ -341,6 +347,34 @@ const Home = () => {
       {/* <Header /> */}
 
       <StatsAndTestimonials />
+
+      <section className="partner-section">
+        <div className="partner-container">
+          <div className="partner-content">
+            <div className="partner-text">
+              <h2>Partner with Drovo</h2>
+              <p>
+                Join thousands of restaurants growing their business with Drovo
+              </p>
+              <ul className="partner-benefits">
+                <li>Reach more customers in your area</li>
+                <li>Increase revenue with online orders</li>
+                <li>Easy-to-use restaurant dashboard</li>
+                <li>Dedicated marketing support</li>
+              </ul>
+              <button className="partner-cta-btn">Become a Partner</button>
+            </div>
+            <div className="partner-visual">
+              <div className="partner-image-placeholder">
+                <img
+                  src={assetsUser.restaurant_partner}
+                  alt="Partner with Drovo"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

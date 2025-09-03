@@ -214,27 +214,25 @@ const LoginPopup = ({ setShowLogin }) => {
                     <img onClick={() => setShowLogin(false)} src={assetsUser.cross_icon} alt="Close" />
                 </div>
 
-                <div className="role-selection">
-                    <label className={`radio-label ${data.role === "user" ? "active" : ""}`}>
-                        <input
-                            type="radio"
-                            name="role"
-                            value="user"
-                            checked={data.role === "user"}
-                            onChange={onChangeHandler}
-                        />
-                        <span>User</span>
-                    </label>
-                    <label className={`radio-label ${data.role === "shop" ? "active" : ""}`}>
-                        <input
-                            type="radio"
-                            name="role"
-                            value="shop"
-                            checked={data.role === "shop"}
-                            onChange={onChangeHandler}
-                        />
-                        <span>Shop</span>
-                    </label>
+                <div className="role-tabs">
+                    <div className="tab-container">
+                        <button
+                            type="button"
+                            className={`tab-button ${data.role === "user" ? "active" : ""}`}
+                            onClick={() => setData(prev => ({ ...prev, role: "user" }))}
+                        >
+                            {/* <span className="tab-icon">👤</span> */}
+                            <span className="tab-text">User</span>
+                        </button>
+                        <button
+                            type="button"
+                            className={`tab-button ${data.role === "shop" ? "active" : ""}`}
+                            onClick={() => setData(prev => ({ ...prev, role: "shop" }))}
+                        >
+                            {/* <span className="tab-icon">🏪</span> */}
+                            <span className="tab-text">Shop</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="login-popup-input">

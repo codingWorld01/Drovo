@@ -9,6 +9,12 @@ import Loader from '../../components/Loader/Loader';
 const Dashboard = () => {
   const [shopData, setShopData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalOrders: 0,
+    totalItems: 0,
+    pendingOrders: 0,
+    totalRevenue: 0
+  });
   const { url, logout } = useContext(StoreContext);
   const navigate = useNavigate();
 
@@ -51,8 +57,50 @@ const Dashboard = () => {
       }
     };
 
+    const fetchStats = async () => {
+      try {
+        let token = localStorage.getItem('token');
+        if (!token) return;
+
+        // Fetch orders
+        const ordersResponse = await axios.post(`${url}/api/order/userorders`, {}, {
+          headers: { token }
+        });
+
+        if (ordersResponse.data.success) {
+          const orders = ordersResponse.data.data;
+          const totalRevenue = orders.reduce((sum, order) => 
+            order.status === "Delivered" ? sum + order.amount : sum, 0
+          );
+          const pendingOrders = orders.filter(order => 
+            order.status === "Food Processing" || order.status === "Out for delivery"
+          ).length;
+
+          setStats(prev => ({
+            ...prev,
+            totalOrders: orders.length,
+            totalRevenue,
+            pendingOrders
+          }));
+        }
+
+        // Fetch food items
+        const foodResponse = await axios.get(`${url}/api/food/list`);
+        if (foodResponse.data.success) {
+          setStats(prev => ({
+            ...prev,
+            totalItems: foodResponse.data.data.length
+          }));
+        }
+
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      }
+    };
+
     fetchShopData();
-  }, [url, navigate]);
+    fetchStats();
+  }, [url, navigate, logout]);
 
   if (loading) {
     return <Loader />;
@@ -62,54 +110,58 @@ const Dashboard = () => {
     return <div>No data available</div>;
   }
 
-  const googleMapUrl = `https://www.google.com/maps?q=${shopData.shopAddress.latitude},${shopData.shopAddress.longitude}&hl=es&z=14&output=embed`;
-
   return (
     <div className="dashboard">
-      {shopData.shopImage && (
-        <div className="shop-banner">
-          <img src={`${shopData.shopImage}`} alt="" className="shop-banner-image" />
+      <div className="dashboard-header">
+        <h1>Dashboard Overview</h1>
+        <p>Welcome back, {shopData.name}!</p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-number">{stats.totalOrders}</div>
+          <div className="stat-label">Total Orders</div>
         </div>
-      )}
-
-      <div className="dashboard-content">
-
-        <div className="dashboard-info">
-          <div className="shop-info">
-            <h3>Shop Information</h3>
-            <p><strong>Name:</strong> {shopData.name}</p>
-            <p><strong>Email:</strong> {shopData.email}</p>
-            <p><strong>Phone:</strong> {shopData.phone || 'N/A'}</p>
-            <p><strong>Address:</strong> {shopData.shopAddress.address}</p>
-          </div>
-
-          <div className="subscription-info">
-            <h3>Subscription Details</h3>
-            <p><strong>Subscription Plan:</strong> {shopData.subscription}</p>
-            <p><strong>Subscription End Date:</strong> {new Date(shopData.subEndDate).toLocaleDateString()}</p>
-            <p><strong>Setup Complete:</strong> {shopData.isSetupComplete ? 'Yes' : 'No'}</p>
-          </div>
-
-          <div className="payment-info">
-            <h3>Payment Details</h3>
-            <p><strong>Razorpay Order ID:</strong> {shopData.paymentDetails?.razorpayOrderId || 'N/A'}</p>
-            <p><strong>Razorpay Payment ID:</strong> {shopData.paymentDetails?.razorpayPaymentId || 'N/A'}</p>
-            <p><strong>Payment Date:</strong> {shopData.paymentDetails?.paymentDate ? new Date(shopData.paymentDetails.paymentDate).toLocaleDateString() : 'N/A'}</p>
-          </div>
+        
+        <div className="stat-card">
+          <div className="stat-number">{stats.totalItems}</div>
+          <div className="stat-label">Menu Items</div>
         </div>
+        
+        <div className="stat-card">
+          <div className="stat-number">{stats.pendingOrders}</div>
+          <div className="stat-label">Pending Orders</div>
+        </div>
+        
+        <div className="stat-card">
+          <div className="stat-number">₹{stats.totalRevenue.toLocaleString()}</div>
+          <div className="stat-label">Total Revenue</div>
+        </div>
+      </div>
 
-        {/* Google Maps Section */}
-        <div className="map-section">
-          <h3>Shop Location</h3>
-          <iframe
-            title="Shop Location"
-            width="100%"
-            height="300px"
-            frameBorder="0"
-            style={{ border: 0, borderRadius: '15px' }}
-            src={googleMapUrl}
-            allowFullScreen
-          ></iframe>
+      {/* Shop Information */}
+      <div className="shop-info">
+        <h3>Shop Information</h3>
+        <div className="info-grid">
+          <div className="info-item">
+            <strong>Name:</strong> {shopData.name}
+          </div>
+          <div className="info-item">
+            <strong>Email:</strong> {shopData.email}
+          </div>
+          <div className="info-item">
+            <strong>Phone:</strong> {shopData.phone || 'N/A'}
+          </div>
+          <div className="info-item">
+            <strong>Address:</strong> {shopData.shopAddress.address}
+          </div>
+          <div className="info-item">
+            <strong>Subscription:</strong> {shopData.subscription}
+          </div>
+          <div className="info-item">
+            <strong>Expires:</strong> {new Date(shopData.subEndDate).toLocaleDateString()}
+          </div>
         </div>
       </div>
     </div>

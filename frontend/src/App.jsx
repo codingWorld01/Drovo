@@ -20,10 +20,10 @@ import Orders from "../src/pages/Orders/Orders";
 import { StoreContext } from "./context/storeContext";
 import ShopDetails from "./pages/ShopDetails/ShopDetails";
 import RenewSubscription from "./pages/RenewSubscription/RenewSubscription";
-import NotFound from './components/NotFound/NotFound';
+import NotFound from "./components/NotFound/NotFound";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
-import OrderDetails from './pages/OrderDetails/OrderDetails';
+import OrderDetails from "./pages/OrderDetails/OrderDetails";
 import EditPage from "./pages/EditPage/EditPage";
 import SeeAll from "./pages/SeeAll/SeeAll";
 import Chatbot from "./components/Chatbot/Chatbot";
@@ -45,16 +45,23 @@ const App = () => {
             <NavbarUser setShowLogin={setShowLogin} />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/cart" element={<Cart setShowLogin={setShowLogin} />} />
+              <Route
+                path="/cart"
+                element={<Cart setShowLogin={setShowLogin} />}
+              />
               <Route path="/order" element={<PlaceOrder />} />
               <Route path="/verify" element={<Verify />} />
               <Route path="/myorders" element={<MyOrders />} />
               <Route path="/myorders/:id" element={<OrderDetails />} />
               <Route path="/shop/:shopId" element={<ShopDetails />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+              <Route
+                path="/terms-and-conditions"
+                element={<TermsAndConditions />}
+              />
               <Route path="/category/:category" element={<SeeAll />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <Chatbot />
           </>
         ) : (
           <>
@@ -79,12 +86,24 @@ const App = () => {
                     <div className="app-content">
                       <Sidebar />
                       <Routes>
-                        <Route path="/renew-subscription" element={<RenewSubscription />} />
+                        <Route
+                          path="/renew-subscription"
+                          element={<RenewSubscription />}
+                        />
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/dashboard/add" element={<Add />} />
-                        <Route path="/dashboard/list" element={<List url={url} />} />
-                        <Route path="/dashboard/orders" element={<Orders url={url} />} />
-                        <Route path="/dashboard/edit/:id" element={<EditPage url={url} />} />
+                        <Route
+                          path="/dashboard/list"
+                          element={<List url={url} />}
+                        />
+                        <Route
+                          path="/dashboard/orders"
+                          element={<Orders url={url} />}
+                        />
+                        <Route
+                          path="/dashboard/edit/:id"
+                          element={<EditPage url={url} />}
+                        />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </div>
@@ -95,7 +114,6 @@ const App = () => {
           </>
         )}
       </div>
-      <Chatbot />
 
       <Footer />
     </>

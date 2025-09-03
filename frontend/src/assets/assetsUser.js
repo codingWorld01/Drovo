@@ -32,6 +32,7 @@ import quick from './quick.png'
 import securepayment from './secure-payment.png'
 import search_icon from './search_icon.png'
 import noresult from './no-results.png'
+import restaurant_partner from './restaurant_partner.png'
 
 
 export const assetsUser = {
@@ -66,6 +67,7 @@ export const assetsUser = {
     main3,
     main4,
     Cart,
-    deliveryBoy
+    deliveryBoy,
+    restaurant_partner,
 }
 
