@@ -29,7 +29,17 @@ import SeeAll from "./pages/SeeAll/SeeAll";
 import Chatbot from "./components/Chatbot/Chatbot";
 
 const App = () => {
+  // Modified to handle initialState and initialRole parameters
   const [showLogin, setShowLogin] = useState(false);
+  const [loginInitialState, setLoginInitialState] = useState("Login");
+  const [loginInitialRole, setLoginInitialRole] = useState("user");
+  
+  // Updated function to handle showing login popup with specific state and role
+  const handleShowLogin = (show, initialState = "Login", initialRole = "user") => {
+    setShowLogin(show);
+    setLoginInitialState(initialState);
+    setLoginInitialRole(initialRole);
+  };
   const { userType, url } = useContext(StoreContext);
 
   return (
@@ -38,16 +48,16 @@ const App = () => {
 
       <ScrollToTop />
 
-      {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
+      {showLogin && <LoginPopup setShowLogin={setShowLogin} initialState={loginInitialState} initialRole={loginInitialRole} />}
       <div className={`app-${userType}`}>
         {userType === "user" ? (
           <>
-            <NavbarUser setShowLogin={setShowLogin} />
+            <NavbarUser setShowLogin={handleShowLogin} />
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home setShowLogin={handleShowLogin}/>} />
               <Route
                 path="/cart"
-                element={<Cart setShowLogin={setShowLogin} />}
+                element={<Cart setShowLogin={handleShowLogin} />}
               />
               <Route path="/order" element={<PlaceOrder />} />
               <Route path="/verify" element={<Verify />} />
@@ -71,7 +81,7 @@ const App = () => {
                 element={
                   <>
                     <div className="app-user">
-                      <NavbarUser setShowLogin={setShowLogin} />
+                      <NavbarUser setShowLogin={handleShowLogin} />
                     </div>
                     <Setup />
                   </>

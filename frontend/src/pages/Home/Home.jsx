@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 import { MapPin } from "lucide-react";
 import StatsAndTestimonials from "../../components/Testimonials/StatsAndTestimonials";
 
-const Home = () => {
+const Home = ({ setShowLogin }) => {
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userLocation, setUserLocation] = useState({
@@ -24,12 +24,7 @@ const Home = () => {
   const [address, setAddress] = useState("");
   const { url, logout } = useContext(StoreContext);
   const shopSectionRef = useRef(null);
-  const partnerSectionRef = useRef(null); // Add ref for partner section
-  const [showLogin, setShowLogin] = useState(false);
-  const [loginConfig, setLoginConfig] = useState({
-    initialState: "Sign Up",
-    initialRole: "user"
-  });
+  const partnerSectionRef = useRef(null); 
 
 
   const fetchShops = useCallback(
@@ -187,13 +182,7 @@ const Home = () => {
     shopSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleBecomePartner = () => {
-    setLoginConfig({
-      initialState: "Sign Up",
-      initialRole: "shop"
-    });
-    setShowLogin(true);
-  };
+
 
   // Add function to scroll to partner section
   const scrollToPartnerSection = () => {
@@ -222,7 +211,6 @@ const Home = () => {
 
   return (
     <div>
-      {showLogin && <LoginPopup setShowLogin={setShowLogin} initialState={loginConfig.initialState} initialRole={loginConfig.initialRole} />}
       <div className="hero-section-new">
         <div className="hero-content">
           <div className="hero-text">
@@ -265,7 +253,7 @@ const Home = () => {
                 className="cta-button secondary"
                 onClick={handleJoinDrovo}
               >
-                Join Drovo
+                Become a Partner
               </button>
             </div>
           </div>
@@ -383,7 +371,10 @@ const Home = () => {
                 <li>Easy-to-use restaurant dashboard</li>
                 <li>Dedicated marketing support</li>
               </ul>
-              <button className="partner-cta-btn" onClick={handleBecomePartner}>Become a Partner</button>
+              <button className="partner-cta-btn" onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'instant' }); // Explicitly set behavior to auto (no animation)
+                setShowLogin(true, "Sign Up", "shop");
+              }}>Become a Partner</button>
             </div>
             <div className="partner-visual">
               <div className="partner-image-placeholder">
