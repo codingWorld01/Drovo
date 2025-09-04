@@ -1,3 +1,4 @@
+import LoginPopup from "../../components/LoginPopup/LoginPopup";
 import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import "./Home.css";
 import Header from "../../components/NavbarUser/Header/Header";
@@ -23,6 +24,13 @@ const Home = () => {
   const [address, setAddress] = useState("");
   const { url, logout } = useContext(StoreContext);
   const shopSectionRef = useRef(null);
+  const partnerSectionRef = useRef(null); // Add ref for partner section
+  const [showLogin, setShowLogin] = useState(false);
+  const [loginConfig, setLoginConfig] = useState({
+    initialState: "Sign Up",
+    initialRole: "user"
+  });
+
 
   const fetchShops = useCallback(
     async (latitude, longitude, radius = 10) => {
@@ -103,8 +111,7 @@ const Home = () => {
   const convertCoordinatesToAddress = async (latitude, longitude) => {
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${
-          import.meta.env.VITE_GOOGLE_MAPS_API
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${import.meta.env.VITE_GOOGLE_MAPS_API
         }`
       );
       if (response.data.status === "OK") {
@@ -180,6 +187,19 @@ const Home = () => {
     shopSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleBecomePartner = () => {
+    setLoginConfig({
+      initialState: "Sign Up",
+      initialRole: "shop"
+    });
+    setShowLogin(true);
+  };
+
+  // Add function to scroll to partner section
+  const scrollToPartnerSection = () => {
+    partnerSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const handleSearch = () => {
     // Check if user has set location
     if (!address && !userLocation.latitude && !userLocation.longitude) {
@@ -196,12 +216,13 @@ const Home = () => {
   };
 
   const handleJoinDrovo = () => {
-    // Scroll to shops section to showcase available options
-    scrollToShops();
+    // Scroll to partner section instead of shops section
+    scrollToPartnerSection();
   };
 
   return (
     <div>
+      {showLogin && <LoginPopup setShowLogin={setShowLogin} initialState={loginConfig.initialState} initialRole={loginConfig.initialRole} />}
       <div className="hero-section-new">
         <div className="hero-content">
           <div className="hero-text">
@@ -269,46 +290,46 @@ const Home = () => {
               </div>
             ))
           ) : // userLocation.latitude && userLocation.longitude ? (
-          shops.length > 0 ? (
-            shops.map((shop) => (
-              <Link
-                to={`/shop/${shop._id}`}
-                key={shop._id}
-                className="shop-card"
-              >
-                <div className="shop-card-content">
-                  <img
-                    src={shop.shopImage}
-                    alt={shop.name}
-                    className="shop-image-home"
-                  />
-                  <div className="shop-info-home">
-                    <h2>{shop.name}</h2>
-                    <p>
-                      {shop.shopAddress.address}, {shop.shopAddress.city}
-                    </p>
-                    {shop.distance && (
+            shops.length > 0 ? (
+              shops.map((shop) => (
+                <Link
+                  to={`/shop/${shop._id}`}
+                  key={shop._id}
+                  className="shop-card"
+                >
+                  <div className="shop-card-content">
+                    <img
+                      src={shop.shopImage}
+                      alt={shop.name}
+                      className="shop-image-home"
+                    />
+                    <div className="shop-info-home">
+                      <h2>{shop.name}</h2>
                       <p>
-                        <b>
-                          {(shop.distance || 0).toFixed(2) == 0.0
-                            ? 0
-                            : (shop.distance || 0).toFixed(2)}{" "}
-                          km away
-                        </b>
+                        {shop.shopAddress.address}, {shop.shopAddress.city}
                       </p>
-                    )}
+                      {shop.distance && (
+                        <p>
+                          <b>
+                            {(shop.distance || 0).toFixed(2) == 0.0
+                              ? 0
+                              : (shop.distance || 0).toFixed(2)}{" "}
+                            km away
+                          </b>
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))
-          ) : (
-            // ) : (
-            //     <p className="no-shops-message">No shops available near your location.</p>
-            // )
-            <p className="select-city-message">
-              Please select your location to see nearby shops.
-            </p>
-          )}
+                </Link>
+              ))
+            ) : (
+              // ) : (
+              //     <p className="no-shops-message">No shops available near your location.</p>
+              // )
+              <p className="select-city-message">
+                Please select your location to see nearby shops.
+              </p>
+            )}
         </div>
       </div>
 
@@ -348,7 +369,7 @@ const Home = () => {
 
       <StatsAndTestimonials />
 
-      <section className="partner-section">
+      <section className="partner-section" ref={partnerSectionRef}>
         <div className="partner-container">
           <div className="partner-content">
             <div className="partner-text">
@@ -362,7 +383,7 @@ const Home = () => {
                 <li>Easy-to-use restaurant dashboard</li>
                 <li>Dedicated marketing support</li>
               </ul>
-              <button className="partner-cta-btn">Become a Partner</button>
+              <button className="partner-cta-btn" onClick={handleBecomePartner}>Become a Partner</button>
             </div>
             <div className="partner-visual">
               <div className="partner-image-placeholder">

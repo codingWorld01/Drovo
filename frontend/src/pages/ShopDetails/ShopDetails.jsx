@@ -5,7 +5,9 @@ import './ShopDetails.css';
 import { StoreContext } from '../../context/storeContext';
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay';
 import { assetsUser } from '../../assets/assetsUser';
-import Loader from '../../components/Loader/Loader';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { Store } from 'lucide-react';
 
 const ShopDetails = () => {
     const { shopId } = useParams();
@@ -14,10 +16,11 @@ const ShopDetails = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredFoodItems, setFilteredFoodItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [shopNotFound, setShopNotFound] = useState(false);
     const { url, fetchShopFoodList, getNumberOfItems, logout } = useContext(StoreContext);
     const [showCartIcon, setShowCartIcon] = useState(false);
     const navigate = useNavigate();
-    const searchBarRef = useRef(null); // Ref for the search bar
+    const searchBarRef = useRef(null);
 
     const fetchShopDetails = async () => {
         try {
@@ -26,11 +29,14 @@ const ShopDetails = () => {
                 setShop(response.data.data.shop);
                 setFoodItems(response.data.data.foodItems);
                 setFilteredFoodItems(response.data.data.foodItems);
+                setShopNotFound(false);
                 setLoading(false);
             }
         } catch (error) {
             if (error.response?.status === 401 && error.response.data.message === 'Token expired') {
                 logout();
+            } else if (error.response?.status === 404) {
+                setShopNotFound(true);
             }
             console.error("Error fetching shop details:", error);
             setLoading(false);
@@ -69,8 +75,84 @@ const ShopDetails = () => {
         }
     };
 
+    // Shop Info Skeleton Component
+    const ShopInfoSkeleton = () => (
+        <div className="shop-info-container">
+            <Skeleton height={300} width={400} className="shop-detail-image" />
+            <div className="shop-info">
+                <Skeleton height={40} width="70%" />
+                <div className="shop-email">
+                    <Skeleton height={24} width={24} style={{ marginRight: '10px' }} />
+                    <Skeleton height={20} width="200px" />
+                </div>
+                <div className="shop-address">
+                    <Skeleton height={20} width="100%" />
+                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
+                        <Skeleton height={24} width={24} style={{ marginRight: '10px' }} />
+                        <Skeleton height={20} width="150px" />
+                    </div>
+                </div>
+                <div className="shop-contact">
+                    <Skeleton height={24} width={24} style={{ marginRight: '10px' }} />
+                    <Skeleton height={20} width="120px" />
+                </div>
+            </div>
+        </div>
+    );
 
-    if (loading) return <Loader />;
+    // Search Bar Skeleton
+    const SearchBarSkeleton = () => (
+        <div className="search-bar">
+            <Skeleton height={50} width="100%" style={{ borderRadius: '30px' }} />
+        </div>
+    );
+
+    // Food Items Skeleton
+    const FoodItemsSkeleton = () => (
+        <div className="food-display-skeleton">
+            {[...Array(6)].map((_, index) => (
+                <div key={index} className="food-item-skeleton">
+                    <Skeleton height={200} width="100%" style={{ borderRadius: '15px' }} />
+                    <Skeleton height={20} width="80%" style={{ marginTop: '10px' }} />
+                    <Skeleton height={16} width="60%" style={{ marginTop: '5px' }} />
+                    <Skeleton height={18} width="40%" style={{ marginTop: '10px' }} />
+                </div>
+            ))}
+        </div>
+    );
+
+    // Shop Not Found Component
+    const ShopNotFound = () => (
+        <div className="shop-not-found">
+            <Store size={80} className="shop-not-found-icon" />
+            <h2>Shop Not Found</h2>
+            <p>Sorry, the shop you're looking for doesn't exist or has been removed.</p>
+            <button 
+                className="go-back-button" 
+                onClick={() => navigate('/')}
+            >
+                Go Back to Home
+            </button>
+        </div>
+    );
+
+    if (loading) {
+        return (
+            <div className="shop-details">
+                <ShopInfoSkeleton />
+                <SearchBarSkeleton />
+                <FoodItemsSkeleton />
+            </div>
+        );
+    }
+
+    if (shopNotFound) {
+        return (
+            <div className="shop-details">
+                <ShopNotFound />
+            </div>
+        );
+    }
 
     return (
         <div className="shop-details">
@@ -118,14 +200,14 @@ const ShopDetails = () => {
 
                     <div
                         className={`search-bar ${!searchQuery ? 'search-empty' : ''}`}
-                        ref={searchBarRef} // Attach the ref to the search bar
+                        ref={searchBarRef}
                     >
                         <input
                             type="text"
                             placeholder="Search for food items..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            onFocus={handleSearchFocus} // Scroll to the search bar on focus
+                            onFocus={handleSearchFocus}
                             className="search-input"
                         />
                         {!searchQuery && (
@@ -148,7 +230,7 @@ const ShopDetails = () => {
                         {searchQuery && (
                             <button
                                 className="clear-button"
-                                onClick={() => setSearchQuery('')} // Reset the searchQuery
+                                onClick={() => setSearchQuery('')}
                             >
                                 Clear
                             </button>
@@ -164,7 +246,7 @@ const ShopDetails = () => {
                     ) : (
                         <div className="no-food-items">
                             <img
-                                src={assetsUser.noresult} // Add a placeholder image in your assets
+                                src={assetsUser.noresult}
                                 alt="No Food Items"
                                 className="no-food-image"
                             />
@@ -172,7 +254,7 @@ const ShopDetails = () => {
                             {searchQuery && (
                                 <button
                                     className="clear-button-not-found"
-                                    onClick={() => setSearchQuery('')} // Reset search query to show all food items
+                                    onClick={() => setSearchQuery('')}
                                 >
                                     Clear Search
                                 </button>
@@ -181,7 +263,7 @@ const ShopDetails = () => {
                     )}
                 </>
             ) : (
-                <p>Shop details not available</p>
+                <ShopNotFound />
             )}
 
             {getNumberOfItems() > 0 && showCartIcon && (
@@ -193,7 +275,6 @@ const ShopDetails = () => {
                 </div>
             )}
         </div>
-
     );
 };
 

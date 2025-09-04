@@ -81,8 +81,7 @@
 }
 
 .cta-button.secondary:hover {
-  background-color: tomato;
-  color: white;
+  background-color: rgb(242, 241, 241);
 }
 
 .hero-image {
@@ -430,7 +429,8 @@
   display: block;
 }
 
-/* Responsive Design */
+/* Replace the existing mobile media query section for CTA buttons */
+
 @media (max-width: 768px) {
   .features-section h2 {
     font-size: 2rem;
@@ -500,8 +500,9 @@
     right: 6px;
   }
 
+  /* Keep buttons in one row on mobile */
   .cta-buttons-container {
-    flex-direction: column;
+    flex-direction: row; /* Changed from column to row */
     gap: 10px;
   }
 
@@ -529,7 +530,9 @@
   }
 
   .partner-benefits li {
+    width: 80%;
     font-size: 1rem;
+    padding-left: 18px; /* Reduced gap */
   }
 
   .partner-cta-btn {
@@ -544,7 +547,7 @@
   }
 
   .input-container input {
-    padding: 8px 40px 8px 12px;
+    padding: 12px 40px 12px 12px;
     font-size: 0.8rem;
   }
 
@@ -554,8 +557,21 @@
     right: 5px;
   }
 
+  .shop-list {
+    padding: 0px;
+  }
+
+  /* Keep buttons in one row even on very small screens */
   .cta-buttons-container {
-    gap: 8px;
+    width: 100%;
+    margin-top: 0px;
+    flex-direction: row;
+  }
+
+  /* Adjust button font size for very small screens */
+  .cta-button {
+    font-size: 0.9rem;
+    padding: 10px 16px;
   }
 
   /* Partner Section Small Screens */
@@ -574,10 +590,38 @@
   .partner-benefits li {
     font-size: 0.9rem;
     margin-bottom: 12px;
+    padding-left: 0px; /* Even smaller gap */
+  }
+
+  .partner-benefits li::before {
+    left: 0;
+    font-size: 1rem; /* Even smaller checkmark for very small screens */
   }
 
   .partner-cta-btn {
     padding: 12px 24px;
     font-size: 1rem;
+  }
+
+  .features-section {
+    padding: 0px 20px;
+    margin-bottom: 0vh;
+    text-align: center;
+  }
+
+  .feature img {
+    margin-bottom: 0px;
+  }
+
+  .feature h3 {
+    margin-bottom: 5px;
+  }
+
+  .feature {
+    padding: 10px 20px;
+  }
+
+  .features-grid {
+    gap: 10px;
   }
 }

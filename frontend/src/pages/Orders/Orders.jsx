@@ -3,7 +3,9 @@ import './Orders.css';
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { assetsAdmin } from "../../assets/assetsAdmin";
-import Loader from "../../components/Loader/Loader";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { ShoppingBag } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { StoreContext } from '../../context/storeContext';
 
@@ -99,6 +101,37 @@ const Orders = ({ url }) => {
     }
   };
 
+  // Skeleton component for loading state
+  const OrderSkeleton = () => (
+    <div className="order-item">
+      <Skeleton height={60} width={60} />
+      <div className="order-details">
+        <Skeleton height={16} width="80%" />
+        <Skeleton height={16} width="60%" />
+        <Skeleton height={14} width="90%" />
+        <Skeleton height={14} width="70%" />
+        <Skeleton height={14} width="50%" />
+        <Skeleton height={40} width="150px" />
+      </div>
+      <div className="order-summary">
+        <Skeleton height={14} width="80%" />
+        <Skeleton height={14} width="70%" />
+        <Skeleton height={14} width="90%" />
+        <Skeleton height={14} width="85%" />
+        <Skeleton height={36} width="100%" />
+      </div>
+    </div>
+  );
+
+  // No orders component
+  const NoOrdersMessage = () => (
+    <div className="no-orders-container">
+      <ShoppingBag size={64} className="no-orders-icon" />
+      <h3>No Orders Available</h3>
+      <p>There are currently no orders to display. Orders will appear here once customers start placing them.</p>
+    </div>
+  );
+
   useEffect(() => {
     fetchAllOrders();
     window.addEventListener('scroll', handleScroll);
@@ -111,12 +144,17 @@ const Orders = ({ url }) => {
   return (
     <div className="order-page">
       <h3>Order Management</h3>
+
       {loading ? (
-        <Loader />
+        <div className="order-list">
+          {[...Array(3)].map((_, index) => (
+            <OrderSkeleton key={index} />
+          ))}
+        </div>
       ) : (
         <div className="order-list">
           {orders && orders.length === 0 ? (
-            <p className="no-orders-message">No orders available at the moment.</p>
+            <NoOrdersMessage />
           ) : (
             orders.slice().reverse().map((order, index) => (
               <div key={index} className="order-item">

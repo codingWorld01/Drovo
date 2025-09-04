@@ -123,7 +123,7 @@ const TestimonialsSection = () => {
       location: "Nagpur, Maharashtra",
       text: "Drovo has completely changed how I shop for groceries. Fresh products delivered right to my door, and the quality is always top-notch. Highly recommend!",
       image:
-        "https://images.unsplash.com/photo-1494790108755-2616b2b29cd3?w=150&h=150&fit=crop&crop=face",
+        "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTAxL3Jhd3BpeGVsX29mZmljZV8zM19waG90b19yZWFsX2luZGlhbl9idXNpbmVzc193b21hbl90aGVfaW1hZ2VfaV85Y2E0ZTUwYy02Yzg4LTQwNTYtODg5Mi1kYTk0MDY2YTc4NDRfMS5wbmc.png",
     },
     {
       id: 2,

@@ -4,7 +4,8 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { StoreContext } from '../../context/storeContext';
-import Loader from '../../components/Loader/Loader';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Dashboard = () => {
   const [shopData, setShopData] = useState(null);
@@ -102,8 +103,48 @@ const Dashboard = () => {
     fetchStats();
   }, [url, navigate, logout]);
 
+  // Dashboard Header Skeleton
+  const DashboardHeaderSkeleton = () => (
+    <div className="dashboard-header">
+      <Skeleton height={32} width="250px" />
+      <Skeleton height={16} width="180px" style={{ marginTop: '8px' }} />
+    </div>
+  );
+
+  // Stats Grid Skeleton
+  const StatsGridSkeleton = () => (
+    <div className="stats-grid">
+      {[...Array(4)].map((_, index) => (
+        <div key={index} className="stat-card">
+          <Skeleton height={32} width="60px" style={{ marginBottom: '8px' }} />
+          <Skeleton height={14} width="80px" />
+        </div>
+      ))}
+    </div>
+  );
+
+  // Shop Info Skeleton
+  const ShopInfoSkeleton = () => (
+    <div className="shop-info">
+      <Skeleton height={20} width="150px" style={{ marginBottom: '20px' }} />
+      <div className="info-grid">
+        {[...Array(6)].map((_, index) => (
+          <div key={index} className="info-item">
+            <Skeleton height={16} width="100%" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   if (loading) {
-    return <Loader />;
+    return (
+      <div className="dashboard">
+        <DashboardHeaderSkeleton />
+        <StatsGridSkeleton />
+        <ShopInfoSkeleton />
+      </div>
+    );
   }
 
   if (!shopData) {

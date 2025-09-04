@@ -92,15 +92,7 @@
     border-radius: 8px;
 }
 
-.nav-item.add-item .nav-icon {
-    background: tomato;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-}
+
 
 .nav-label {
     font-size: 10px;

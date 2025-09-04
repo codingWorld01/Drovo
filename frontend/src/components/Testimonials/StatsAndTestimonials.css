@@ -58,7 +58,7 @@
   border-radius: 20px;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  min-width: 200px;
+  min-width: 180px;
 }
 
 .stat-icon {
@@ -243,7 +243,7 @@
   }
 
   .stat-card-home {
-    padding: 30px 20px;
+    padding: 20px 10px;
   }
 
   .stat-number-home {
@@ -280,7 +280,7 @@
   }
 
   .testimonial-card {
-    margin: 0 20px;
+    margin: 0 0px;
     padding: 25px;
   }
 
@@ -299,10 +299,14 @@
   }
 
   .statistics-section {
-    padding: 60px 20px;
+    padding: 30px 4px;
   }
 
   .testimonials-section {
-    padding: 60px 20px;
+    padding: 0px 0px;
+  }
+
+  .quote-icon {
+    top: -30px;
   }
 }

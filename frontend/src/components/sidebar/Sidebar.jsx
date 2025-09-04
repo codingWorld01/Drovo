@@ -1,7 +1,7 @@
 import React from 'react'
 import './Sidebar.css'
-import { assetsAdmin } from '../../assets/assetsAdmin'
 import { NavLink } from 'react-router-dom'
+import { Home, Plus, List, ShoppingCart } from 'lucide-react'
 
 const Sidebar = () => {
   return (
@@ -10,19 +10,19 @@ const Sidebar = () => {
       <div className='sidebar'>
         <div className="sidebar-options">
           <NavLink to='/' className="sidebar-option">
-            <span className="sidebar-icon">🏠</span>
+            <Home className="sidebar-icon" size={20} />
             <p>Dashboard</p>
           </NavLink>
           <NavLink to='/dashboard/add' className="sidebar-option">
-            <img src={assetsAdmin.add_icon} alt="" />
+            <Plus className="sidebar-icon" size={20} />
             <p>Add Items</p>
           </NavLink>
           <NavLink to='/dashboard/list' className="sidebar-option">
-            <img src={assetsAdmin.list_icon} alt="" />
+            <List className="sidebar-icon" size={20} />
             <p>List Items</p>
           </NavLink>
           <NavLink to='/dashboard/orders' className="sidebar-option">
-            <img src={assetsAdmin.order_icon} alt="" />
+            <ShoppingCart className="sidebar-icon" size={20} />
             <p>Orders</p>
           </NavLink>
         </div>
@@ -31,19 +31,19 @@ const Sidebar = () => {
       {/* Mobile Bottom Navigation */}
       <div className='mobile-bottom-nav'>
         <NavLink to='/' className="nav-item">
-          <span className="nav-icon">🏠</span>
+          <Home className="nav-icon" size={20} />
           <span className="nav-label">Home</span>
         </NavLink>
         <NavLink to='/dashboard/orders' className="nav-item">
-          <span className="nav-icon">📋</span>
+          <ShoppingCart className="nav-icon" size={20} />
           <span className="nav-label">Orders</span>
         </NavLink>
         <NavLink to='/dashboard/add' className="nav-item add-item">
-          <span className="nav-icon">+</span>
+          <Plus className="nav-icon" size={24} />
           <span className="nav-label">Add</span>
         </NavLink>
         <NavLink to='/dashboard/list' className="nav-item">
-          <span className="nav-icon">📝</span>
+          <List className="nav-icon" size={20} />
           <span className="nav-label">List</span>
         </NavLink>
       </div>

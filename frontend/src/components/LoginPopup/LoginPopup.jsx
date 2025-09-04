@@ -10,9 +10,9 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
 
-const LoginPopup = ({ setShowLogin }) => {
+const LoginPopup = ({ setShowLogin, initialState = "Login", initialRole = "user" }) => {
     const { url, setToken, setUserType } = useContext(StoreContext);
-    const [currentState, setCurrentState] = useState("Login");
+    const [currentState, setCurrentState] = useState(initialState);
     const [otpStep, setOtpStep] = useState(false);
     const [otp, setOtp] = useState("");
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const LoginPopup = ({ setShowLogin }) => {
         name: "",
         email: "",
         password: "",
-        role: "user",
+        role: initialRole, // Use initialRole prop instead of "user"
     });
 
 

@@ -160,4 +160,8 @@
     .navbarUser-menu {
         display: none;
     }
+
+    .navbarUser-search-icon img {
+        width: 28px;
+    }
 }
