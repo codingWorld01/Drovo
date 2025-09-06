@@ -9,6 +9,7 @@ import { StoreContext } from '../../context/storeContext';
 const Add = () => {
     const { logout, url } = useContext(StoreContext);
     const [image, setImage] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({
         name: "",
         description: "",
@@ -50,6 +51,8 @@ const Add = () => {
             return;
         }
 
+        setIsLoading(true);
+
         try {
 
             const token = localStorage.getItem('token');
@@ -76,6 +79,7 @@ const Add = () => {
                                 unit: "liter",
                                 quantity: 1
                             });
+                            setIsLoading(false);
                             setImage(null);
                             return response.data.message || "Food item added successfully!";
                         },
@@ -99,11 +103,15 @@ const Add = () => {
                     }
                 );
             }
-            reader.onerror = () => toast.error("Error in reading image file");
+            reader.onerror = () => {
+                toast.error("Error in reading image file");
+                setIsLoading(false); // 
+            };
         }
         catch (error) {
             toast.error("Error Adding Food Item")
             console.log("Error in adding FoodItem", error);
+            setIsLoading(false);
         }
     };
 
@@ -208,7 +216,9 @@ const Add = () => {
                         />
                     </div>
                 </div>
-                <button type="submit" className="add-button">ADD</button>
+                <button type="submit" className="add-button" disabled={isLoading}>
+                    {isLoading ? "ADDING..." : "ADD"}
+                </button>
             </form>
         </div>
     );

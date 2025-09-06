@@ -101,6 +101,9 @@ const EditPage = () => {
         });
       }
 
+      setLoading(true);
+
+
       await toast.promise(
         axios.post(`${url}/api/food/edit/${id}`, formData, {
           headers: { token, "Content-Type": "application/json" }
@@ -137,11 +140,13 @@ const EditPage = () => {
     } catch (error) {
       toast.error("Error uploading image");
     }
+    finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="add">
-      {loading && <Loader />}
       <form onSubmit={onSubmitHandler} className="flex-col">
         <div className="add-image-upload flex-col">
           <p>Upload Image</p>
@@ -232,7 +237,9 @@ const EditPage = () => {
             />
           </div>
         </div>
-        <button type="submit" className="add-button">UPDATE</button>
+        <button type="submit" className="add-button" disabled={loading}>
+          {loading ? "UPDATING..." : "UPDATE"}
+        </button>
       </form>
     </div>
   );

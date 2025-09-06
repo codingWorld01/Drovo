@@ -17,6 +17,7 @@ import Loader from "../../components/Loader/Loader";
 const Home = ({ setShowLogin }) => {
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
   const [userLocation, setUserLocation] = useState({
     latitude: null,
     longitude: null,
@@ -27,6 +28,9 @@ const Home = ({ setShowLogin }) => {
   const shopSectionRef = useRef(null);
   const partnerSectionRef = useRef(null); 
 
+  const handleHeroImageLoad = () => {
+    setHeroImageLoaded(true);
+  };
 
   const fetchShops = useCallback(
     async (latitude, longitude, radius = 10) => {
@@ -183,8 +187,6 @@ const Home = ({ setShowLogin }) => {
     shopSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-
-
   // Add function to scroll to partner section
   const scrollToPartnerSection = () => {
     partnerSectionRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -259,7 +261,12 @@ const Home = ({ setShowLogin }) => {
             </div>
           </div>
           <div className="hero-image">
-            <img src={assetsUser.deliveryBoy} alt="Food Delivery" />
+            {!heroImageLoaded && <Loader />}
+            <img 
+              src={assetsUser.deliveryBoy} 
+              alt="Food Delivery"
+              onLoad={handleHeroImageLoad}
+            />
           </div>
         </div>
       </div>
