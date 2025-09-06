@@ -26,7 +26,7 @@ const NavbarUser = ({ setShowLogin }) => {
                     <button onClick={() => setShowLogin(true)}>Sign in</button> :
                     <div className='navbarUser-profile'>
                         <img src={assetsUser.profile_icon} alt="" />
-                        <span className="dropdown-arrow">▼</span> {/* Dropdown icon */}
+                        <span className="dropdown-arrow">▲</span> {/* Dropdown icon */}
                         <ul className='navbarUser-profile-dropdown'>
                             <li onClick={() => navigate('/myorders')}>
                                 <img src={assetsUser.bag_icon} alt="" /><p>Orders</p>

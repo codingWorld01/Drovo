@@ -12,6 +12,7 @@ import Testimonials from "../../components/Testimonials/StatsAndTestimonials";
 import { toast } from "react-hot-toast";
 import { MapPin } from "lucide-react";
 import StatsAndTestimonials from "../../components/Testimonials/StatsAndTestimonials";
+import Loader from "../../components/Loader/Loader";
 
 const Home = ({ setShowLogin }) => {
   const [shops, setShops] = useState([]);

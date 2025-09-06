@@ -285,6 +285,7 @@ const PlaceOrder = () => {
 
     try {
       if (paymentMethod === "COD") {
+        setIsLoading(true);
         await axios
           .post(`${url}/api/order/place`, orderData, { headers: { token } })
           .then((res) => {
@@ -297,7 +298,9 @@ const PlaceOrder = () => {
               logout();
             }
             toast.error("Failed to place order. Please try again.");
-          });
+          })
+          .finally(() => setIsLoading(false));
+
       } else {
         const isRazorpayLoaded = await loadRazorpayScript();
         if (!isRazorpayLoaded) {
@@ -317,6 +320,7 @@ const PlaceOrder = () => {
           order_id: order.id,
           handler: async function (response) {
             try {
+              setIsLoading(true);
               const verifyResponse = await axios.post(
                 `${url}/api/order/verify`,
                 {
@@ -338,6 +342,9 @@ const PlaceOrder = () => {
             } catch (error) {
               console.error("Error verifying payment:", error);
               toast.error("Payment verification failed. Please contact support.");
+            }
+            finally {
+              setIsLoading(false);
             }
           },
           prefill: {
@@ -472,7 +479,7 @@ const PlaceOrder = () => {
                   <span className="payment-subtitle">Pay when you receive</span>
                 </div>
               </button>
-              
+
               <button
                 type="button"
                 className={`payment-btn ${paymentMethod === "Online" ? "active" : ""}`}

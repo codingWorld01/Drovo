@@ -118,8 +118,8 @@ const Cart = ({ setShowLogin }) => {
                     </div>
                     
                     <div className="item-details">
-                      <h3 className="item-name">{item.name}</h3>
-                      <p className="item-price">₹{item.price}</p>
+                      <h3 className="cart-item-name">{item.name}</h3>
+                      <p className="cart-item-price">₹{item.price}</p>
                       <p className="item-quantity-display">
                         {getDisplayQuantity(itemQuantity * item.quantity, item.unit)}
                       </p>
@@ -175,14 +175,7 @@ const Cart = ({ setShowLogin }) => {
             </div>
 
             <div className="total-section">
-              <div className="total-row">
-                <span>Subtotal</span>
-                <span>₹{getTotalCartAmount()}</span>
-              </div>
-              <div className="total-row">
-                <span>Delivery Fee</span>
-                <span>₹0</span>
-              </div>
+             
               <div className="total-row final-total">
                 <span>Total</span>
                 <span>₹{getTotalCartAmount()}</span>
@@ -191,7 +184,6 @@ const Cart = ({ setShowLogin }) => {
 
             {!isEligibleForCheckout && (
               <div className="min-purchase-notice">
-                <span className="notice-icon">ℹ️</span>
                 Minimum purchase of ₹60 required to checkout
               </div>
             )}

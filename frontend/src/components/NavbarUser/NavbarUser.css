@@ -1,167 +1,177 @@
 .navbarUser {
-    padding: 8px 0px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 8px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navbarUser .logo {
-    width: 80px;
+  width: 80px;
 }
 
 .navbarUser-menu {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    color: #49557e;
-    font-size: 18px;
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  color: #49557e;
+  font-size: 18px;
 }
 
 .navbarUser-right {
-    display: flex;
-    align-items: center;
-    gap: 40px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
 .navbarUser button {
-    background: transparent;
-    font-size: 16px;
-    color: #49557e;
-    border: 1px solid tomato;
-    padding: 10px 30px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
+  background: transparent;
+  font-size: 16px;
+  color: #49557e;
+  border: 1px solid tomato;
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .navbarUser button:hover {
-    background-color: #efeae9;
-
+  background-color: #efeae9;
 }
 
 .navbarUser .active {
-    padding-bottom: 2px;
-    border-bottom: 2px solid #49557e;
+  padding-bottom: 2px;
+  border-bottom: 2px solid #49557e;
 }
 
 .navbarUser li {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .navbarUser-search-icon {
-    position: relative;
+  position: relative;
 }
 
 .navbarUser-profile {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
 }
 
 .navbarUser-profile-dropdown {
-    position: absolute;
-    top: 100%;
-    /* Move the dropdown below the profile */
-    left: -200%;
-    /* Adjust this value to move it to the left */
-    display: none;
-    z-index: 1;
+  position: absolute;
+  top: 100%;
+  /* Move the dropdown below the profile */
+  left: -200%;
+  /* Adjust this value to move it to the left */
+  display: none;
+  z-index: 1;
 }
 
-
 .navbarUser-search-icon .cart-items-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: tomato;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: tomato;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .navbarUser-profile:hover .navbarUser-profile-dropdown {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fff2ef;
-    padding: 12px 25px;
-    border-radius: 4px;
-    border: 1px solid tomato;
-    outline: 2px solid white;
-    list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff2ef;
+  padding: 12px 25px;
+  border-radius: 4px;
+  border: 1px solid tomato;
+  outline: 2px solid white;
+  list-style: none;
 }
 
 /* Adjust the dropdown arrow position */
 .navbarUser-profile .dropdown-arrow {
-    font-size: 12px;
-    color: #49557e;
-    transition: transform 0.3s ease;
+  font-size: 12px;
+  color: #49557e;
+  transition: transform 0.3s ease;
 }
 
 /* Rotate the arrow when hovering */
 .navbarUser-profile:hover .dropdown-arrow {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .navbarUser-profile-dropdown li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
 .navbarUser-profile-dropdown img {
-    width: 20px;
+  width: 20px;
 }
 
 .navbarUser-profile-dropdown li:hover {
-    color: tomato;
+  color: tomato;
 }
 
-@media (max-width:1050px) {
-    .navbarUser .logo {
-        width: 70px;
-    }
+@media (max-width: 1050px) {
+  .navbarUser .logo {
+    width: 70px;
+  }
 
-    .navbarUser-menu {
-        gap: 20px;
-        font-size: 17px;
-    }
+  .navbarUser-menu {
+    gap: 20px;
+    font-size: 17px;
+  }
 
-    .navbarUser-right {
-        gap: 30px
-    }
+  .navbarUser-right {
+    gap: 30px;
+  }
 
-    .navbarUser-right img {
-        width: 22px;
-    }
+  .navbarUser-right img {
+    width: 22px;
+  }
 
-    .navbarUser-right button {
-        padding: 7px 20px;
-        font-size: 15px;
-    }
+  .navbarUser-right button {
+    padding: 7px 20px;
+    font-size: 15px;
+  }
 }
 
+@media (max-width: 750px) {
+  .navbarUser {
+    padding: 8px 10px;
+  }
 
-@media (max-width:750px) {
+  .navbarUser-menu {
+    display: none;
+  }
 
-    .navbarUser {
-        padding: 8px 10px;
-    }
+  .navbarUser-search-icon img {
+    width: 27px;
+  }
 
-    .navbarUser-menu {
-        display: none;
-    }
+  .navbarUser-right {
+    gap: 15px;
+  }
 
-    .navbarUser-search-icon img {
-        width: 28px;
-    }
+  .navbarUser-profile-dropdown {
+    position: absolute;
+    top: 120%;
+    /* Move the dropdown below the profile */
+    left: -220%;
+    /* Adjust this value to move it to the left */
+    display: none;
+    z-index: 1;
+  }
 }

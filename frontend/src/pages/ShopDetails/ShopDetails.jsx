@@ -26,6 +26,7 @@ const ShopDetails = () => {
         try {
             if (shopId) {
                 const response = await axios.get(`${url}/api/shops/${shopId}`);
+                console.log(response.data.data.shop);
                 setShop(response.data.data.shop);
                 setFoodItems(response.data.data.foodItems);
                 setFilteredFoodItems(response.data.data.foodItems);
@@ -127,8 +128,8 @@ const ShopDetails = () => {
             <Store size={80} className="shop-not-found-icon" />
             <h2>Shop Not Found</h2>
             <p>Sorry, the shop you're looking for doesn't exist or has been removed.</p>
-            <button 
-                className="go-back-button" 
+            <button
+                className="go-back-button"
                 onClick={() => navigate('/')}
             >
                 Go Back to Home
@@ -166,6 +167,20 @@ const ShopDetails = () => {
                         />
                         <div className="shop-info">
                             <h1>{shop.name}</h1>
+                            <div className="shop-address">
+                                <p>Address: {shop.shopAddress.address}</p>
+
+                            </div>
+                            {shop.shopAddress.latitude && shop.shopAddress.longitude && (
+                                <a
+                                    href={`https://www.google.com/maps/dir/?api=1&destination=${shop.shopAddress.latitude},${shop.shopAddress.longitude}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <img src={assetsUser.direction} alt="" className="icon-image" />
+                                    Get Directions
+                                </a>
+                            )}
                             <div className="shop-email">
                                 <a
                                     href={`mailto:${shop.email}`}
@@ -175,19 +190,6 @@ const ShopDetails = () => {
                                     <img src={assetsUser.email} alt="" className="icon-image" />
                                     Contact via Email
                                 </a>
-                            </div>
-                            <div className="shop-address">
-                                <p>Address: {shop.shopAddress.address}</p>
-                                {shop.shopAddress.latitude && shop.shopAddress.longitude && (
-                                    <a
-                                        href={`https://www.google.com/maps/dir/?api=1&destination=${shop.shopAddress.latitude},${shop.shopAddress.longitude}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img src={assetsUser.direction} alt="" className="icon-image" />
-                                        Get Directions
-                                    </a>
-                                )}
                             </div>
                             <div className="shop-contact">
                                 <a href={`tel:${shop.phone}`}>

@@ -5,7 +5,6 @@ import { StoreContext } from "../../context/storeContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../Loader/Loader";
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
@@ -17,6 +16,7 @@ const LoginPopup = ({ setShowLogin, initialState = "Login", initialRole = "user"
     const [otp, setOtp] = useState("");
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const [termsAccepted, setTermsAccepted] = useState(false);
 
 
     const [data, setData] = useState({
@@ -37,6 +37,31 @@ const LoginPopup = ({ setShowLogin, initialState = "Login", initialRole = "user"
         e.preventDefault();
         const url = "/terms-and-conditions";
         window.open(url, "_blank");
+    };
+
+    const handleTermsTextClick = () => {
+        setTermsAccepted(!termsAccepted);
+    };
+
+    const getButtonText = () => {
+        if (!isLoading) {
+            if (data.role === "shop" && currentState === "Sign Up" && !otpStep) {
+                return "Send OTP";
+            } else if (otpStep) {
+                return "Verify OTP";
+            } else {
+                return "Submit";
+            }
+        }
+
+        // Loading states
+        if (data.role === "shop" && currentState === "Sign Up" && !otpStep) {
+            return "Sending OTP...";
+        } else if (otpStep) {
+            return "Verifying OTP...";
+        } else {
+            return "Submitting...";
+        }
     };
 
 
@@ -204,7 +229,6 @@ const LoginPopup = ({ setShowLogin, initialState = "Login", initialRole = "user"
 
     return (
         <div className="login-popup">
-            {isLoading && <Loader />}
             <form
                 onSubmit={otpStep ? onOtpSubmit : currentState === "Sign Up" && data.role === "shop" ? onSendOtp : onLoginOrRegister}
                 className="login-popup-container"
@@ -276,8 +300,13 @@ const LoginPopup = ({ setShowLogin, initialState = "Login", initialRole = "user"
                 </div>
 
                 <div className="login-popup-condition">
-                    <input type="checkbox" required />
-                    <p>
+                    <input 
+                        type="checkbox" 
+                        checked={termsAccepted}
+                        onChange={(e) => setTermsAccepted(e.target.checked)}
+                        required 
+                    />
+                    <p onClick={handleTermsTextClick} style={{ cursor: 'pointer' }}>
                         I have read and agree to the{" "}
                         <Link to="#" onClick={handleTermsClick} className="highlighted-link">
                             Terms and Conditions and Privacy Policy
@@ -285,12 +314,8 @@ const LoginPopup = ({ setShowLogin, initialState = "Login", initialRole = "user"
                     </p>
                 </div>
 
-                <button type="submit">
-                    {data.role === "shop" && currentState === "Sign Up" && !otpStep
-                        ? "Send OTP"
-                        : otpStep
-                            ? "Verify OTP"
-                            : "Submit"}
+                <button type="submit" disabled={isLoading}>
+                    {getButtonText()}
                 </button>
 
 

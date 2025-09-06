@@ -197,8 +197,7 @@ const placeOrder = async (req, res) => {
       .map(item => `${item.name} (x${item.quantity})`)
       .join(', ');
 
-      console.log("amount ", req.body.amount)
-    const notificationMessage = `New Online Order #${order._id} at ${shop.name}!\nItems: ${itemsList}\nTotal: ₹${(amount + deliveryCharge).toFixed(2)} (Cash on Delivery)\nDelivery Address: ${address.street}\nPlease check your admin panel to process the order.\nThank you for using Drovo!`;
+    const notificationMessage = `New Online Order #${order._id} at ${shop.name}!\nItems: ${itemsList}\nTotal: ₹${(req.body.amount + req.body.deliveryCharge).toFixed(2)} (Cash on Delivery)\nDelivery Address: ${req.body.address.street}\nPlease check your admin panel to process the order.\nThank you for using Drovo!`;
     const shopAmount = (req.body.amount + req.body.deliveryCharge) * 0.99;
     const platformCommission = (req.body.amount + req.body.deliveryCharge) * 0.01;
     const emailBody = `Hello ${shop.name},\n\nA new order has been placed at your shop!\n\nOrder Details:\n- Amount: ₹${req.body.amount}\n- Delivery Charge: ₹${req.body.deliveryCharge}\n- Payment Method: Cash on Delivery\n- Amount to Shopkeeper: ₹${shopAmount.toFixed(2)}\n- Platform Commission (1%): ₹${platformCommission.toFixed(2)}\n- User Address: ${req.body.address.street}\n\nPlease remit the platform commission to Drovo at the end of the month.\n\nPlease check your admin panel for more details.\n\nThank you for using Drovo!`;

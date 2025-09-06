@@ -58,6 +58,30 @@ const MyOrders = () => {
     fetchOrders(); 
   };
 
+  // Skeleton Component
+  const OrderSkeleton = () => (
+    <div className="skeleton-orders-container">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div className="skeleton-order-card" key={index}>
+          <div className="skeleton-order-header">
+            <div className="skeleton skeleton-icon"></div>
+            <div className="skeleton skeleton-order-id"></div>
+          </div>
+          <div className="skeleton skeleton-order-items"></div>
+          <div className="skeleton-order-details">
+            <div className="skeleton skeleton-detail-row">
+              <div className="skeleton skeleton-total"></div>
+              <div className="skeleton skeleton-items-count"></div>
+            </div>
+            <div className="skeleton skeleton-status"></div>
+            <div className="skeleton skeleton-date"></div>
+            <div className="skeleton skeleton-button"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   useEffect(() => {
     if (token) {
       fetchOrders();
@@ -80,15 +104,7 @@ const MyOrders = () => {
       </div>
 
       {loading ? (
-        <div className="skeleton-container">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <div className="skeleton-card" key={index}>
-              <div className="skeleton-header"></div>
-              <div className="skeleton-body"></div>
-              <div className="skeleton-footer"></div>
-            </div>
-          ))}
-        </div>
+        <OrderSkeleton />
       ) : data && data.length === 0 ? (
         <div className="no-orders">
           <p>You have not placed any orders yet.</p>
